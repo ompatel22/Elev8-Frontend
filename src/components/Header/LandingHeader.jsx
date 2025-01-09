@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FaSun, FaMoon } from "react-icons/fa";
+import Icon from '../Logo/Logo';
 const LandingHeader = () => {
 
     const [theme, setTheme] = useState('dark');
@@ -25,6 +26,7 @@ const LandingHeader = () => {
     return (
         <>
             <header className="dark:bg-gray-800 bg-gray-100 dark:text-white text-gray-800 py-16 relative">
+
                 <div className="container mx-auto px-4">
                     <div className="absolute top-4 right-4 flex space-x-4">
                         <button
@@ -49,8 +51,8 @@ const LandingHeader = () => {
                         <h1 className="text-6xl font-extrabold leading-tight mb-6 dark:text-gray-100 text-black">
                             Elev8
                         </h1>
-                        <p className="font-bold text-2xl mb-8 mx-auto max-w-3xl dark:text-gray-100 text-black">
-                            Connect. Collaborate. Achieve. Showcase your coding achievements, find hackathon teammates, and join study groups with like-minded peers.
+                        <p className="text-xl mb-8 mx-auto max-w-2xl dark:text-gray-100 text-black">
+                            Connect. Collaborate. Achieve. Showcase your coding achievements from platforms like GitHub and LeetCode, find the perfect teammates for hackathons, join focused study groups with like-minded peers , and connect with your college community through exclusive group chats, event updates, and shared resources to stay informed and engaged.
                         </p>
                     </div>
                 </div>
