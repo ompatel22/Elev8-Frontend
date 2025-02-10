@@ -4,27 +4,27 @@ import { FaSun, FaMoon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const LandingHeader = () => {
-  const [theme, setTheme] = useState("dark");
-  const [isVisible, setIsVisible] = useState(false);
+  // const [theme, setTheme] = useState("dark");
+  // const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    setIsVisible(true);
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.add(savedTheme);
-    } else {
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
+  // useEffect(() => {
+  //   setIsVisible(true);
+  //   const savedTheme = localStorage.getItem("theme");
+  //   if (savedTheme) {
+  //     setTheme(savedTheme);
+  //     document.documentElement.classList.add(savedTheme);
+  //   } else {
+  //     document.documentElement.classList.add("dark");
+  //   }
+  // }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.remove("dark", "light");
-    document.documentElement.classList.add(newTheme);
-  };
+  // const toggleTheme = () => {
+  //   const newTheme = theme === "light" ? "dark" : "light";
+  //   setTheme(newTheme);
+  //   localStorage.setItem("theme", newTheme);
+  //   document.documentElement.classList.remove("dark", "light");
+  //   document.documentElement.classList.add(newTheme);
+  // };
 
   return (
     <>
@@ -45,7 +45,7 @@ const LandingHeader = () => {
               </div>
             </motion.div>
             <div className="flex space-x-4">
-              <motion.button
+              {/* <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-gray-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center"
@@ -56,7 +56,7 @@ const LandingHeader = () => {
                 ) : (
                   <FaSun className="text-yellow-400" />
                 )}
-              </motion.button>
+              </motion.button> */}
               <Link to="/login">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
