@@ -22,6 +22,7 @@ const ProfileDashboard = () => {
     axios
       .get(`http://localhost:8080/api/users/${username}`)
       .then((response) => {
+        console.log(response.data);
         setUserData(response.data);
         setSuccess(true);
       })

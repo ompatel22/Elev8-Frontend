@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { Link, useNavigate } from "react-router-dom";
-
+import { httpClient } from "../../config/AxiosHelper";
+import useChatContext from "../../context/ChatContext";
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { roomId, currentUser, connected, setConnected, setRoomId, setCurrentUser } = useChatContext();
+
   // Form state
   const [formData, setFormData] = useState({
     username: "",
@@ -58,6 +61,11 @@ const LoginForm = () => {
 
       setSuccess(true);
       localStorage.setItem("username", data.username);
+      httpClient.defaults.headers.common['username'] = data.username;
+      localStorage.setItem("college", data.collegeName);
+      setCurrentUser(data.username);
+      setConnected(true);
+      setRoomId(data.collegeName);
       setTimeout(() => {
         navigate("/dashboard");
       }, 1000);
@@ -147,9 +155,8 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-lg shadow-md hover:from-blue-700 hover:to-purple-700 hover:scale-105 transition-transform transform ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-lg shadow-md hover:from-blue-700 hover:to-purple-700 hover:scale-105 transition-transform transform ${loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 {loading ? "Logging in..." : "Login"}
               </button>
@@ -189,7 +196,7 @@ const LoginForm = () => {
         <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-purple-500 rounded-full opacity-30 blur-3xl animate-pulse"></div>
         <div className="absolute top-10 right-10 w-48 h-48 bg-pink-500 rounded-full opacity-20 blur-3xl animate-pulse"></div>
       </div> */}
-      
+
     </div>
   );
 };

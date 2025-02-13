@@ -5,7 +5,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 const Navigation = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const username=localStorage.getItem('username');
+  const username = localStorage.getItem('username');
   const handleLogout = () => {
     localStorage.removeItem("username");
     navigate("/");
@@ -28,7 +28,7 @@ const Navigation = () => {
             <NavItem to="/dashboard/study-groups">Study Groups</NavItem>
             <NavItem to="/dashboard/college-chat">College Chat</NavItem>
             <NavItem to="/dashboard/hackathons">Hackathons</NavItem>
-            <NavItem to={"/dashboard/profile/"+username}>
+            <NavItem to={"/dashboard/profile/" + username}>
               {localStorage.getItem("username") || "Profile"}
             </NavItem>
             <button
@@ -72,7 +72,7 @@ const Navigation = () => {
           >
             Study Groups
           </NavItem>
-          <NavItem to={"/dashboard/profile/"+username} onClick={() => setMenuOpen(false)}>
+          <NavItem to={"/dashboard/profile/" + username} onClick={() => setMenuOpen(false)}>
             {localStorage.getItem("username") || "Profile"}
           </NavItem>
           <button

@@ -10,43 +10,27 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import HackathonPage from "./pages/HackathonPage.jsx";
 import HackathonRegistrationForm from "./components/forms/HackathonRegistrationForm.jsx";
 import HackathonDetailsPage from "./pages/HackathonDetailsPage.jsx";
+import ChatPage from "./components/Chat/Chatpage.jsx";
+import CollegeChatPage from "./pages/CollegeChatPage.jsx";
+import { ChatProvider } from "./context/ChatContext.jsx";
+
 const appRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <App/>
-  },
-  {
-    path: "/register",
-    element: <RegistrationForm/>
-  },
-  {
-    path: "/login",
-    element: <LoginForm/>
-  },
-  {
-    path: "/dashboard",
-    element: <DashboardPage/>
-  },
-  {
-    path:"/dashboard/profile/:username",
-    element: <ProfilePage/>
-  },
-  {
-    path:"/dashboard/hackathons",
-    element: <HackathonPage/>
-  },
-  {
-    path:"/dashboard/hackathons/add",
-    element: <HackathonRegistrationForm/>
-  },
-  {
-    path:"/dashboard/hackathons/:id",
-    element: <HackathonDetailsPage/>
-  }
+  { path: "/", element: <App /> },
+  { path: "/register", element: <RegistrationForm /> },
+  { path: "/login", element: <LoginForm /> },
+  { path: "/dashboard", element: <DashboardPage /> },
+  { path: "/dashboard/profile/:username", element: <ProfilePage /> },
+  { path: "/dashboard/hackathons", element: <HackathonPage /> },
+  { path: "/dashboard/hackathons/add", element: <HackathonRegistrationForm /> },
+  { path: "/dashboard/hackathons/:id", element: <HackathonDetailsPage /> },
+  // { path: "/dashboard/college-chat/", element: <CollegeChatPage /> },
+  { path: "/dashboard/college-chat", element: <ChatPage /> }
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={appRouter} />
+    <ChatProvider>
+      <RouterProvider router={appRouter} />
+    </ChatProvider>
   </StrictMode>
 );
