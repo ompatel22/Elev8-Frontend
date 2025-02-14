@@ -8,8 +8,6 @@ export const ChatProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState("");
   const [connected, setConnected] = useState(false);
   useEffect(() => {
-    console.log("in");
-
     const clg = localStorage.getItem("college");
     const user = localStorage.getItem("username")
 

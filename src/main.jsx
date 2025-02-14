@@ -12,6 +12,8 @@ import HackathonRegistrationForm from "./components/forms/HackathonRegistrationF
 import HackathonDetailsPage from "./pages/HackathonDetailsPage.jsx";
 import CollegeChatPage from "./pages/CollegeChatPage.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx";
+import HackathonRequestPage from "./pages/HackathonRequestPage.jsx";
+import HackathonRequestStatusPage from "./pages/HackathonRequestStatusPage.jsx";
 
 const appRouter = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -22,6 +24,8 @@ const appRouter = createBrowserRouter([
   { path: "/dashboard/hackathons", element: <HackathonPage /> },
   { path: "/dashboard/hackathons/add", element: <HackathonRegistrationForm /> },
   { path: "/dashboard/hackathons/:id", element: <HackathonDetailsPage /> },
+  { path: "/dashboard/hackathons/requests", element: <HackathonRequestPage /> },
+  { path: "/dashboard/hackathons/requests/status", element: <HackathonRequestStatusPage /> },
   { path: "/dashboard/college-chat/", element: <CollegeChatPage /> },
 ]);
 

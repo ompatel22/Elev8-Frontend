@@ -25,7 +25,6 @@ const ProfileDashboard = () => {
         console.log(response.data);
         setUserData(response.data);
         setSuccess(true);
-        localStorage.setItem("githubUsername", response.data.githubUsername);
       })
       .catch((error) => console.error("Error fetching user data:", error));
   }, [username]);
@@ -40,7 +39,6 @@ const ProfileDashboard = () => {
         .get(`https://api.github.com/users/${userData.githubUsername}`)
         .then((response) => setGithubData(response.data))
         .catch((error) => console.error("Error fetching GitHub data:", error));
-
       // Fetch LeetCode data
       axios
         .get(

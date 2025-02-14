@@ -8,7 +8,7 @@ const HackathonCard = ({ id, title, organization, theme, mode, registrationDates
     <p className="text-sm">Mode: {mode}</p>
     <p className="text-sm">Starts: {registrationDates.start}</p>
     <p className="text-sm">Ends: {registrationDates.end}</p>  
-    <p className="text-sm">Created By: {createdBy}</p>
+    <p className="text-sm">Uploaded By: {createdBy}</p>
     <Link to={`/dashboard/hackathons/${id}`}>
     <button className="px-6 py-3 bg-blue-500 text-white rounded mt-4">
       Join Now

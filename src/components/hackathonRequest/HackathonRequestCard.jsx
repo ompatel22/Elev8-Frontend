@@ -1,0 +1,65 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+const HackathonRequestCard = ({
+  id,
+  hackathonTitle,
+  requestedBy,
+  hackathonId,
+  requestedAt,
+  status,
+}) => {
+  const [statusx, setStatusx] = useState(status);
+
+  const handleAccept = () => {
+    axios.put(`http://localhost:8080/request/${id}/accepted`);
+    setStatusx("accepted");
+  };
+
+  const handleReject = () => {
+    axios.put(`http://localhost:8080/request/${id}/rejected`);
+    setStatusx("rejected");
+  };
+
+  return (
+    <div className="shadow-lg p-6 rounded-lg bg-gray-900 text-white border-2 border-blue-500 h-68">
+      <div className="flex items-center gap-2">
+        <Link to={`/dashboard/profile/${requestedBy}`}>
+          <img
+            src={`https://github.com/${requestedBy}.png`}
+            alt=""
+            className="h-10 w-10 rounded-full"
+          />
+        </Link>
+        <h3 className="text-2xl font-bold">{requestedBy}</h3>
+      </div>
+
+      <Link to={`/dashboard/hackathons/${hackathonId}`}>
+        <h4 className="text-xl font-bold pt-4">{hackathonTitle}</h4>
+      </Link>
+
+      <p className="text-sm">Requested At: {requestedAt}</p>
+      {statusx === "pending" ? (
+        <>
+          <button
+            onClick={handleAccept}
+            className="px-6 py-3 bg-blue-500 text-white rounded mt-4 mr-4"
+          >
+            Accept
+          </button>
+          <button
+            onClick={handleReject}
+            className="px-6 py-3 bg-blue-500 text-white rounded mt-4"
+          >
+            Reject
+          </button>
+        </>
+      ) : (
+        <p className="text-sm">Status: {statusx}</p>
+      )}
+    </div>
+  );
+};
+
+export default HackathonRequestCard;

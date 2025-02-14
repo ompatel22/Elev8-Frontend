@@ -2,11 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const Navbar = ({
-  hackathons,
-  setFilteredHackathons,
-}) => {
-
+const Navbar = ({ hackathons, setFilteredHackathons }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (e) => {
@@ -43,9 +39,16 @@ const Navbar = ({
             Add Hackathon
           </button>
         </Link>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded">
-          Received Requests
-        </button>
+        <Link to="/dashboard/hackathons/requests">
+          <button className="px-4 py-2 bg-blue-500 text-white rounded">
+            Received Requests
+          </button>
+        </Link>
+        <Link to="/dashboard/hackathons/requests/status">
+          <button className="px-4 py-2 bg-blue-500 text-white rounded">
+            Requests Status
+          </button>
+        </Link>
       </div>
     </nav>
   );

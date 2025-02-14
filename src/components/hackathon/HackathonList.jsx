@@ -1,5 +1,6 @@
 import HackathonCard from "./HackathonCard";
-import { useState, useEffect } from "react";
+import {useEffect } from "react";
+
 const HackathonList = ({ setHackathons, filteredHackathons, setFilteredHackathons }) => {
 
     const fetchHackathons = async () => {

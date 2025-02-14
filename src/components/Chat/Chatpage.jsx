@@ -4,10 +4,11 @@ import useChatContext from "../../context/ChatContext";
 import { useNavigate } from "react-router-dom";
 import SockJS from "sockjs-client/dist/sockjs";
 import { Stomp } from "@stomp/stompjs";
-import toast from "react-hot-toast";
 import { baseURL } from "../../config/AxiosHelper";
 import { getMessagess } from "../../services/RoomService";
 import { timeAgo } from "../../config/helper";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ChatPage = () => {
     const { roomId, currentUser, connected, setConnected, setRoomId, setCurrentUser } = useChatContext();
@@ -16,7 +17,6 @@ const ChatPage = () => {
     const [input, setInput] = useState("");
     const chatBoxRef = useRef(null);
     const stompClientRef = useRef(null);
-
     // Redirect to home if not connected
     useEffect(() => {
         if (!roomId) {
@@ -131,7 +131,9 @@ const ChatPage = () => {
                     <div key={index} className={`flex ${message.sender === currentUser ? "justify-end" : "justify-start"}`}>
                         <div className={`my-2 ${message.sender === currentUser ? "bg-green-800" : "bg-gray-800"} p-2 max-w-xs rounded`}>
                             <div className="flex flex-row gap-2">
+                            <Link to={`/dashboard/profile/${message.sender}`}>
                                 <img className="h-10 w-10" src={`https://github.com/${message.sender}.png`} alt="" />
+                            </Link>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-sm font-bold">{message.sender}</p>
                                     <p>{message.content}</p>
@@ -142,7 +144,7 @@ const ChatPage = () => {
                     </div>
                 ))}
             </main>
-
+            
             {/* Input Box */}
             <div className="fixed bottom-4 w-full h-16">
                 <div className="h-full pr-10 gap-4 flex items-center justify-between rounded-full w-1/2 mx-auto dark:bg-gray-900">
