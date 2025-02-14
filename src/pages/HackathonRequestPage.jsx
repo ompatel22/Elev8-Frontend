@@ -13,7 +13,7 @@ const HackathonRequestPage = () => {
     const response = await axios.get(
       `http://localhost:8080/requests/${username}`
     );
-    setHackathonRequests(response.data);
+    setHackathonRequests(response.data.reverse()); // Reverse once after fetching
   };
 
   useEffect(() => {

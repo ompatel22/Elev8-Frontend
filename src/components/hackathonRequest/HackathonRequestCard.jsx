@@ -12,6 +12,20 @@ const HackathonRequestCard = ({
 }) => {
   const [statusx, setStatusx] = useState(status);
 
+  // Define border color based on status
+  const getBorderColor = () => {
+    switch (statusx) {
+      case "pending":
+        return "border-yellow-500";
+      case "accepted":
+        return "border-green-500";
+      case "rejected":
+        return "border-red-500";
+      default:
+        return "border-blue-500";
+    }
+  };
+
   const handleAccept = () => {
     axios.put(`http://localhost:8080/request/${id}/accepted`);
     setStatusx("accepted");
@@ -23,7 +37,8 @@ const HackathonRequestCard = ({
   };
 
   return (
-    <div className="shadow-lg p-6 rounded-lg bg-gray-900 text-white border-2 border-blue-500 h-68">
+    <div className={`shadow-lg p-6 rounded-lg bg-gray-900 text-white border-2 ${getBorderColor()} h-68`}>
+      {/* Rest of your component remains the same */}
       <div className="flex items-center gap-2">
         <Link to={`/dashboard/profile/${requestedBy}`}>
           <img

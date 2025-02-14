@@ -319,7 +319,7 @@ const HackathonRegistrationForm = () => {
                     <RadioGroup
                       label="Participation Type"
                       options={[
-                        { value: "individual", label: "Individual" },
+                        // { value: "individual", label: "Individual" },
                         { value: "team", label: "Team" },
                       ]}
                       value={formData.participationType}

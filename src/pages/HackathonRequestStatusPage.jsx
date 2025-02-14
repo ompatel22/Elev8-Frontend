@@ -13,7 +13,7 @@ const HackathonRequestStatusPage = () => {
     const response = await axios.get(
       `http://localhost:8080/requests/status/${username}`
     );
-    setHackathonRequests(response.data);
+    setHackathonRequests(response.data.reverse());
   };
 
   useEffect(() => {
