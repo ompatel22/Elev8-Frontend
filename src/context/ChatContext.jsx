@@ -17,7 +17,6 @@ export const ChatProvider = ({ children }) => {
     console.log(roomId);
     clg ? setConnected(true) : setConnected(false)
     console.log(connected);
-
     user ? setCurrentUser(user) : setCurrentUser(null)
     console.log(currentUser);
 

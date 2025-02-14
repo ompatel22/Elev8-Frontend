@@ -25,6 +25,7 @@ const ProfileDashboard = () => {
         console.log(response.data);
         setUserData(response.data);
         setSuccess(true);
+        localStorage.setItem("githubUsername", response.data.githubUsername);
       })
       .catch((error) => console.error("Error fetching user data:", error));
   }, [username]);
@@ -130,7 +131,7 @@ const ProfileDashboard = () => {
           )}
         </div>
       </div>
-      {console.log("lc", leetcodeData, "cc", codechefData, "gh", githubData)}
+      {/* {console.log("lc", leetcodeData, "cc", codechefData, "gh", githubData)} */}
     </GradientBackground>
   );
 };

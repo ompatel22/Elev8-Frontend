@@ -27,7 +27,7 @@ const FeatureSection = ({ text }) => {
               icon: "👨‍💻",
               title: "Build Your Profile",
               description:
-                "Showcase achievements from platforms like GitHub, LeetCode, and Codeforces.",
+                "Showcase achievements from platforms like GitHub, LeetCode, and CodeChef.",
             },
             {
               icon: "🤝",

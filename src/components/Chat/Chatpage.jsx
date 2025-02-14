@@ -20,9 +20,7 @@ const ChatPage = () => {
     // Redirect to home if not connected
     useEffect(() => {
         if (!roomId) {
-            console.log("Retruend");
-
-            navigate("/");
+            navigate("/dashboard/college-chat"); //changed
         }
     }, [connected, roomId, currentUser]);
 
@@ -100,40 +98,40 @@ const ChatPage = () => {
         }
     };
 
-    // Handle logout
-    function handleLogout() {
-        if (stompClientRef.current) {
-            stompClientRef.current.disconnect();
-            stompClientRef.current = null;
-        }
-        setConnected(false);
-        navigate("/dashboard");
-    }
+    // // Handle logout
+    // function handleLogout() {
+    //     if (stompClientRef.current) {
+    //         stompClientRef.current.disconnect();
+    //         stompClientRef.current = null;
+    //     }
+    //     setConnected(false);
+    //     navigate("/dashboard");
+    // }
 
     return (
         <div>
             {/* Header */}
-            <header className="dark:border-gray-700 fixed w-full dark:bg-gray-900 py-5 shadow flex justify-around items-center">
+            <header className="dark:border-gray-700 fixed w-full dark:bg-gray-900 py-5 shadow flex justify-around items-center pt-28">
                 <div>
-                    <h1 className="text-xl font-semibold">Room: <span>{roomId}</span></h1>
+                    <h1 className="text-xl font-semibold">College Name: <span>{roomId}</span></h1>
                 </div>
-                <div>
+                {/* <div>
                     <h1 className="text-xl font-semibold">User: <span>{currentUser}</span></h1>
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                     <button onClick={handleLogout} className="dark:bg-red-500 dark:hover:bg-red-700 px-3 py-2 rounded-full">
                         Leave Room
                     </button>
-                </div>
+                </div> */}
             </header>
 
             {/* Chat Messages */}
-            <main ref={chatBoxRef} className="py-20 px-10 w-2/3 dark:bg-slate-600 mx-auto h-screen overflow-auto">
+            <main ref={chatBoxRef} className="py-20 px-10 w-full dark:bg-slate-600 mx-auto h-screen overflow-auto">
                 {messages.map((message, index) => (
                     <div key={index} className={`flex ${message.sender === currentUser ? "justify-end" : "justify-start"}`}>
                         <div className={`my-2 ${message.sender === currentUser ? "bg-green-800" : "bg-gray-800"} p-2 max-w-xs rounded`}>
                             <div className="flex flex-row gap-2">
-                                <img className="h-10 w-10" src={"https://avatar.iran.liara.run/public/43"} alt="" />
+                                <img className="h-10 w-10" src={`https://github.com/${message.sender}.png`} alt="" />
                                 <div className="flex flex-col gap-1">
                                     <p className="text-sm font-bold">{message.sender}</p>
                                     <p>{message.content}</p>

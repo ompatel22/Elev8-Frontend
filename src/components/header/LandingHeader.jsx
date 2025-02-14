@@ -72,7 +72,7 @@ const LandingHeader = () => {
                   whileTap={{ scale: 0.95 }}
                   className="bg-purple-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
                 >
-                  Sign Up
+                  Register
                 </motion.button>
               </Link>
             </div>

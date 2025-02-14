@@ -10,7 +10,6 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import HackathonPage from "./pages/HackathonPage.jsx";
 import HackathonRegistrationForm from "./components/forms/HackathonRegistrationForm.jsx";
 import HackathonDetailsPage from "./pages/HackathonDetailsPage.jsx";
-import ChatPage from "./components/Chat/Chatpage.jsx";
 import CollegeChatPage from "./pages/CollegeChatPage.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx";
 
@@ -23,8 +22,7 @@ const appRouter = createBrowserRouter([
   { path: "/dashboard/hackathons", element: <HackathonPage /> },
   { path: "/dashboard/hackathons/add", element: <HackathonRegistrationForm /> },
   { path: "/dashboard/hackathons/:id", element: <HackathonDetailsPage /> },
-  // { path: "/dashboard/college-chat/", element: <CollegeChatPage /> },
-  { path: "/dashboard/college-chat", element: <ChatPage /> }
+  { path: "/dashboard/college-chat/", element: <CollegeChatPage /> },
 ]);
 
 createRoot(document.getElementById("root")).render(
