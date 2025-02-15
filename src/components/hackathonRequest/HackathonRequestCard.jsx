@@ -12,6 +12,18 @@ const HackathonRequestCard = ({
 }) => {
   const [statusx, setStatusx] = useState(status);
 
+  // Format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   // Define border color based on status
   const getBorderColor = () => {
     switch (statusx) {
@@ -54,7 +66,7 @@ const HackathonRequestCard = ({
         <h4 className="text-xl font-bold pt-4">{hackathonTitle}</h4>
       </Link>
 
-      <p className="text-sm">Requested At: {requestedAt}</p>
+      <p className="text-sm">Requested At: {formatDate(requestedAt)}</p>
       {statusx === "pending" ? (
         <>
           <button

@@ -16,6 +16,17 @@ const HackathonRequestStatusCard = ({ id, hackathonTitle, status, hackathonId, c
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
     <div className={`shadow-lg p-6 rounded-lg bg-gray-900 text-white border-2 ${getBorderColor()} h-68`}>
       <div className="flex items-center gap-2">
@@ -33,7 +44,7 @@ const HackathonRequestStatusCard = ({ id, hackathonTitle, status, hackathonId, c
         <h4 className="text-xl font-bold pt-4">{hackathonTitle}</h4>
       </Link>
       <p className="text-sm">Status: {status}</p>
-      <p className="text-sm">Requested At: {requestedAt}</p>
+      <p className="text-sm">Requested At: {formatDate(requestedAt)}</p>
     </div>
   );
 };

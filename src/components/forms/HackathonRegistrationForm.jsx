@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, Upload, Globe } from "lucide-react";
 import Navigation from "../navigation/Navigation";
 import GradientBackground from "../background/GradientBackground";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const Input = ({ label, error, ...props }) => (
   <div className="w-full">
     {label && (
@@ -91,14 +93,15 @@ const HackathonRegistrationForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [formData, setFormData] = useState({
     logo: null,
     title: "",
     organization: "",
     theme: "",
+    location: "",
     mode: "online",
     about: "",
-    participationType: "team",
     teamSize: { min: 1, max: 4 },
     registrationDates: {
       start: "",
@@ -167,24 +170,92 @@ const HackathonRegistrationForm = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:8080/api/hackathons", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      // Create FormData object
+      const submitFormData = new FormData();
 
-      if (!response.ok) {
-        throw new Error("Failed to create hackathon");
+      // Add file first if it exists
+      if (formData.logo) {
+        submitFormData.append("logo", formData.logo);
       }
+
+      // Create a data object without the logo and format dates
+      const dataWithoutLogo = {
+        ...formData,
+        logo: null,
+        registrationDates: {
+          start: formData.registrationDates.start.replace("T", " ") + ":00",
+          end: formData.registrationDates.end.replace("T", " ") + ":00",
+        },
+      };
+
+      // Add the rest of the data as a JSON string
+      submitFormData.append("data", JSON.stringify(dataWithoutLogo));
+
+      const response = await axios.post(
+        "http://localhost:8080/api/hackathons",
+        submitFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       setSuccess(true);
       navigate("/dashboard/hackathons");
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || "Failed to create hackathon");
     } finally {
       setLoading(false);
     }
   };
+
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file size (1MB = 1048576 bytes)
+      if (file.size > 1048576) {
+        setFormErrors((prev) => ({
+          ...prev,
+          logo: "File size must be less than 1MB",
+        }));
+        return;
+      }
+
+      // Check file type
+      if (!file.type.match("image.*")) {
+        setFormErrors((prev) => ({
+          ...prev,
+          logo: "Please upload an image file",
+        }));
+        return;
+      }
+
+      // Create preview URL
+      const preview = URL.createObjectURL(file);
+      setPreviewUrl(preview);
+
+      // Store the file object
+      setFormData((prev) => ({
+        ...prev,
+        logo: file,
+      }));
+
+      setFormErrors((prev) => ({
+        ...prev,
+        logo: undefined,
+      }));
+    }
+  };
+
+  // Clean up preview URL when component unmounts or when preview changes
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
     <GradientBackground className="min-h-screen">
@@ -231,24 +302,53 @@ const HackathonRegistrationForm = () => {
                       </label>
                       <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-700 border-dashed rounded-lg">
                         <div className="space-y-1 text-center">
-                          <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                          <div className="flex text-sm text-gray-400">
-                            <label className="relative cursor-pointer rounded-md font-medium text-blue-500 hover:text-blue-400">
-                              <span>Upload a file</span>
-                              <input
-                                type="file"
-                                className="sr-only"
-                                onChange={(e) =>
-                                  handleInputChange("logo", e.target.files[0])
-                                }
-                                accept="image/*"
+                          {previewUrl ? (
+                            <div className="flex flex-col items-center">
+                              <img
+                                src={previewUrl}
+                                alt="Preview"
+                                className="h-64 w-96 object-cover rounded-lg mb-2"
                               />
-                            </label>
-                            <p className="pl-1">or drag and drop</p>
-                          </div>
-                          <p className="text-xs text-gray-400">
-                            PNG, JPG, GIF up to 1MB
-                          </p>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  URL.revokeObjectURL(previewUrl);
+                                  setPreviewUrl(null);
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    logo: null,
+                                  }));
+                                }}
+                                className="text-sm text-red-500 hover:text-red-400"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                              <div className="flex text-sm text-gray-400">
+                                <label className="relative cursor-pointer rounded-md font-medium text-blue-500 hover:text-blue-400">
+                                  <span>Upload a file</span>
+                                  <input
+                                    type="file"
+                                    className="sr-only"
+                                    onChange={handleLogoUpload}
+                                    accept="image/*"
+                                  />
+                                </label>
+                                <p className="pl-1">or drag and drop</p>
+                              </div>
+                              <p className="text-xs text-gray-400">
+                                PNG, JPG, GIF up to 1MB
+                              </p>
+                            </>
+                          )}
+                          {formErrors.logo && (
+                            <p className="mt-1 text-sm text-red-500">
+                              {formErrors.logo}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -279,6 +379,15 @@ const HackathonRegistrationForm = () => {
                       value={formData.theme}
                       onChange={(e) =>
                         handleInputChange("theme", e.target.value)
+                      }
+                    />
+
+                    <Input
+                      label="Location"
+                      placeholder="Enter hackathon Location"
+                      value={formData.location}
+                      onChange={(e) =>
+                        handleInputChange("location", e.target.value)
                       }
                     />
 
@@ -316,19 +425,6 @@ const HackathonRegistrationForm = () => {
                   </>
                 ) : (
                   <>
-                    <RadioGroup
-                      label="Participation Type"
-                      options={[
-                        // { value: "individual", label: "Individual" },
-                        { value: "team", label: "Team" },
-                      ]}
-                      value={formData.participationType}
-                      onChange={(e) =>
-                        handleInputChange("participationType", e.target.value)
-                      }
-                    />
-
-                    {formData.participationType === "team" && (
                       <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-200">
                           Team Size
@@ -336,7 +432,7 @@ const HackathonRegistrationForm = () => {
                         <div className="flex space-x-4">
                           <Input
                             type="number"
-                            placeholder="Min"
+                            placeholder="Min Team Size"
                             value={formData.teamSize.min}
                             onChange={(e) =>
                               handleInputChange("teamSize", {
@@ -350,7 +446,7 @@ const HackathonRegistrationForm = () => {
                           />
                           <Input
                             type="number"
-                            placeholder="Max"
+                            placeholder="Max Team Size"
                             value={formData.teamSize.max}
                             onChange={(e) =>
                               handleInputChange("teamSize", {
@@ -363,8 +459,7 @@ const HackathonRegistrationForm = () => {
                             error={formErrors.teamSizeMax}
                           />
                         </div>
-                      </div>
-                    )}
+                    </div>
 
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <Input

@@ -2,6 +2,7 @@ import HackathonCard from "./HackathonCard";
 import {useEffect } from "react";
 
 const HackathonList = ({ setHackathons, filteredHackathons, setFilteredHackathons }) => {
+    const username = localStorage.getItem("username");
 
     const fetchHackathons = async () => {
         const response = await fetch("http://localhost:8080/api/hackathons");
@@ -16,7 +17,7 @@ const HackathonList = ({ setHackathons, filteredHackathons, setFilteredHackathon
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredHackathons.map((hackathon, index) => (
+            {filteredHackathons.map((hackathon, index) => (
             <HackathonCard key={index} {...hackathon} />
           ))}
         </div>

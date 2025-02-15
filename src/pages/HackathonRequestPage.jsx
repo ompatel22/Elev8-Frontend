@@ -4,8 +4,20 @@ import Navigation from "../components/navigation/Navigation";
 import HackathonRequestCard from "../components/hackathonRequest/HackathonRequestCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const HackathonRequestPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get the username from localStorage or from a global state if stored after login
+    const username = localStorage.getItem("username"); // or from context or redux
+
+    if (!username) {
+      // If no username found in localStorage, redirect to login
+      navigate("/login");
+    }
+  }, [navigate]);
+
   const [hackathonRequests, setHackathonRequests] = useState([]);
   const username = localStorage.getItem("username");
 
@@ -28,7 +40,7 @@ const HackathonRequestPage = () => {
           <h1 className="text-2xl font-bold">No hackathon requests found</h1>
         </div>
       </GradientBackground>
-      );
+    );
   }
 
   return (

@@ -25,8 +25,15 @@ const HackathonPage = () => {
     <GradientBackground className="min-h-screen">
       <Navigation />
       <div className="container mx-auto p-4 pt-24">
-        <Navbar hackathons={hackathons} setFilteredHackathons={setFilteredHackathons} />
-        <HackathonList setHackathons={setHackathons} filteredHackathons={filteredHackathons} setFilteredHackathons={setFilteredHackathons} />
+        <Navbar
+          hackathons={hackathons}
+          setFilteredHackathons={setFilteredHackathons}
+        />
+        <HackathonList
+          setHackathons={setHackathons}
+          filteredHackathons={filteredHackathons}
+          setFilteredHackathons={setFilteredHackathons}
+        />
       </div>
     </GradientBackground>
   );
