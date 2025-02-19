@@ -9,11 +9,9 @@ function CollegeChatPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get the username from localStorage or from a global state if stored after login
-    const username = localStorage.getItem("username"); // or from context or redux
+    const username = localStorage.getItem("username");
 
     if (!username) {
-      // If no username found in localStorage, redirect to login
       navigate("/login");
     }
   }, [navigate]);

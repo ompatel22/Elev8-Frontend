@@ -108,12 +108,16 @@ const ChatPage = () => {
     //     navigate("/dashboard");
     // }
 
+    const handleCollegeClick = () => {
+        navigate(`/dashboard/college-chat/${roomId}/users`);
+    };
+
     return (
         <div>
             {/* Header */}
             <header className="dark:border-gray-700 fixed w-full dark:bg-gray-900 py-5 shadow flex justify-around items-center pt-28">
                 <div>
-                    <h1 className="text-xl font-semibold">College Name: <span>{roomId}</span></h1>
+                    <h1 className="text-xl font-semibold">College Name: <span onClick={() => handleCollegeClick()}>{roomId}</span></h1>
                 </div>
                 {/* <div>
                     <h1 className="text-xl font-semibold">User: <span>{currentUser}</span></h1>
@@ -131,9 +135,9 @@ const ChatPage = () => {
                     <div key={index} className={`flex ${message.sender === currentUser ? "justify-end" : "justify-start"}`}>
                         <div className={`my-2 ${message.sender === currentUser ? "bg-green-800" : "bg-gray-800"} p-2 max-w-xs rounded`}>
                             <div className="flex flex-row gap-2">
-                            <Link to={`/dashboard/profile/${message.sender}`}>
-                                <img className="h-10 w-10" src={`https://github.com/${message.sender}.png`} alt="" />
-                            </Link>
+                                <Link to={`/dashboard/profile/${message.sender}`}>
+                                    <img className="h-10 w-10" src={`https://github.com/${message.sender}.png`} alt="" />
+                                </Link>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-sm font-bold">{message.sender}</p>
                                     <p>{message.content}</p>
@@ -144,7 +148,7 @@ const ChatPage = () => {
                     </div>
                 ))}
             </main>
-            
+
             {/* Input Box */}
             <div className="fixed bottom-4 w-full h-16">
                 <div className="h-full pr-10 gap-4 flex items-center justify-between rounded-full w-1/2 mx-auto dark:bg-gray-900">

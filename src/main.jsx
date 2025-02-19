@@ -14,6 +14,8 @@ import CollegeChatPage from "./pages/CollegeChatPage.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx";
 import HackathonRequestPage from "./pages/HackathonRequestPage.jsx";
 import HackathonRequestStatusPage from "./pages/HackathonRequestStatusPage.jsx";
+import CollegeChatUsers from "./components/college-chat/CollegeChatUsers.jsx";
+import CollegeChatUsersPage from "./pages/CollegeChatUsersPage.jsx";
 
 const appRouter = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -27,6 +29,7 @@ const appRouter = createBrowserRouter([
   { path: "/dashboard/hackathons/requests", element: <HackathonRequestPage /> },
   { path: "/dashboard/hackathons/requests/status", element: <HackathonRequestStatusPage /> },
   { path: "/dashboard/college-chat/", element: <CollegeChatPage /> },
+  { path: "dashboard/college-chat/:roomId/users", element: <CollegeChatUsersPage /> }
 ]);
 
 createRoot(document.getElementById("root")).render(
