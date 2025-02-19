@@ -20,10 +20,10 @@ const FeatureCard = ({ icon, title, description }) => {
       >
         <motion.div
           className="text-6xl mb-6"
-          initial={{ scale: 0 }}
+          initial={{ scale: 1 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
           {icon}
         </motion.div>

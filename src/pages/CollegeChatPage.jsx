@@ -3,7 +3,7 @@ import GradientBackground from "../components/background/GradientBackground";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Navigation from "../components/navigation/Navigation";
-import Chatpage from "../components/Chat/Chatpage";
+import Chatpage from "../components/chat/Chatpage";
 
 function CollegeChatPage() {
   const navigate = useNavigate();

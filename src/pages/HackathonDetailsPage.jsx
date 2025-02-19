@@ -138,20 +138,20 @@ const HackathonDetailsPage = () => {
           </div>
 
           <div className="flex items-start space-x-4">
-              <Link to={`/dashboard/profile/${hackathonData.createdBy}`}>
-                <img
-                  src={`https://github.com/${hackathonData.createdBy}.png`}
-                  alt=""
-                  className="h-8 w-8 rounded-full mt-1"
-                />
-              </Link>
-              <div className="flex-1">
-                <p className="font-semibold">Uploaded By</p>
-                <p className="text-gray-300 capitalize">
-                  {hackathonData.createdBy}
-                </p>
-              </div>
+            <Link to={`/dashboard/profile/${hackathonData.createdBy}`}>
+              <img
+                src={`https://github.com/${hackathonData.createdBy}.png`}
+                alt=""
+                className="h-8 w-8 rounded-full mt-1"
+              />
+            </Link>
+            <div className="flex-1">
+              <p className="font-semibold">Uploaded By</p>
+              <p className="text-gray-300 capitalize">
+                {hackathonData.createdBy}
+              </p>
             </div>
+          </div>
 
           <div className="space-y-4">
             <div className="flex items-start space-x-4">
@@ -175,9 +175,7 @@ const HackathonDetailsPage = () => {
               <div className="flex-1">
                 <p className="font-semibold">Team Composition</p>
                 <p className="text-gray-300">
-                  {hackathonData.participationType === "team"
-                    ? `${hackathonData.teamSize.min}-${hackathonData.teamSize.max} members`
-                    : "Individual"}
+                  {`${hackathonData.teamSize.min}-${hackathonData.teamSize.max} members`}
                 </p>
               </div>
             </div>
@@ -207,7 +205,7 @@ const HackathonDetailsPage = () => {
                   setDisabled(false);
                 }}
                 className="px-6 py-3 bg-blue-500 text-white rounded mt-24 w-full hover:bg-blue-600 transition-colors"
-              > 
+              >
                 Join Now
               </button>
             )}

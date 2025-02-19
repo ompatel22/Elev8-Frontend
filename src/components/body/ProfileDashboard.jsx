@@ -6,6 +6,7 @@ import GitHubCard from "../profile/GitHubCard";
 import LeetCodeCard from "../profile/LeetcodeCard";
 import CodeChefCard from "../profile/CodeChefCard";
 import GradientBackground from "../background/GradientBackground";
+import ShimmerEffect from "../shimmer/ShimmerEffect";
 
 const ProfileDashboard = () => {
   const params = useParams();
@@ -61,11 +62,34 @@ const ProfileDashboard = () => {
     }
   }, [success, userData]);
 
+  const ProfileSectionShimmer = () => (
+    <div className="w-full md:w-80 bg-black/40 backdrop-blur-md rounded-lg p-6 h-[500px]">
+      <ShimmerEffect className="w-32 h-32 rounded-full mx-auto mb-4" />
+      <ShimmerEffect className="h-6 w-3/4 mx-auto mb-3 rounded" />
+      <ShimmerEffect className="h-4 w-1/2 mx-auto mb-6 rounded" />
+      <ShimmerEffect className="h-20 w-full rounded mb-4" />
+    </div>
+  );
+
+  const CardShimmer = () => (
+    <div className="bg-black/40 backdrop-blur-md rounded-lg p-6 h-[500px]">
+      <ShimmerEffect className="h-8 w-1/3 mb-6 rounded" />
+      <ShimmerEffect className="h-64 w-full rounded mb-6" />
+      <div className="space-y-3">
+        <ShimmerEffect className="h-4 w-2/3 rounded" />
+        <ShimmerEffect className="h-4 w-1/2 rounded" />
+        <ShimmerEffect className="h-4 w-3/4 rounded" />
+      </div>
+    </div>
+  );
+
   return (
     <GradientBackground className="min-h-screen text-white flex flex-col p-6 pt-28">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left Side - Profile Section */}
-        {codechefData && githubData && (
+        {!success || !codechefData || !githubData ? (
+          <ProfileSectionShimmer />
+        ) : (
           <ProfileSection
             imageUrl={githubData.avatar_url}
             countryFlagUrl={codechefData.countryFlag}
@@ -77,27 +101,34 @@ const ProfileDashboard = () => {
 
         {/* Right Side - Platform Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
-          {githubData && (
-            <GitHubCard
-              platform="GitHub Stats"
-              imgUrl1={`https://github-readme-stats.vercel.app/api?username=${userData.githubUsername}&show_icons=true&theme=tokyonight&rank_icon=github&hide_border=true&bg_color=0d0d0d`}
-              imgUrl2={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData.githubUsername}&layout=compact&theme=tokyonight&hide_border=true&bg_color=0d0d0d&card_width=466`}
-              stats={[
-                { label: "Total Repositories", value: githubData.public_repos },
-                { label: "Followers", value: githubData.followers },
-                { label: "Following", value: githubData.following },
-              ]}
-            />
+          {!githubData ? (
+            <>
+              <CardShimmer />
+              <CardShimmer />
+            </>
+          ) : (
+            <>
+              <GitHubCard
+                platform="GitHub Stats"
+                imgUrl1={`https://github-readme-stats.vercel.app/api?username=${userData.githubUsername}&show_icons=true&theme=tokyonight&rank_icon=github&hide_border=true&bg_color=0d0d0d`}
+                imgUrl2={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData.githubUsername}&layout=compact&theme=tokyonight&hide_border=true&bg_color=0d0d0d&card_width=466`}
+                stats={[
+                  { label: "Total Repositories", value: githubData.public_repos },
+                  { label: "Followers", value: githubData.followers },
+                  { label: "Following", value: githubData.following },
+                ]}
+              />
+              <GitHubCard
+                platform="GitHub Stats"
+                imgUrl1={`https://github-contributor-stats.vercel.app/api?username=${userData.githubUsername}&limit=5&theme=tokyonight&combine_all_yearly_contributions=true&hide_border=true&bg_color=0d0d0d&card_width=466`}
+                imgUrl2={`https://streak-stats.demolab.com/?user=${userData.githubUsername}&theme=dark&hide_border=true&card_width=497&bg_color=0d0d0d`}
+                stats={[]}
+              />
+            </>
           )}
-          {githubData && (
-            <GitHubCard
-              platform="GitHub Stats"
-              imgUrl1={`https://github-contributor-stats.vercel.app/api?username=${userData.githubUsername}&limit=5&theme=tokyonight&combine_all_yearly_contributions=true&hide_border=true&bg_color=0d0d0d&card_width=466`}
-              imgUrl2={`https://streak-stats.demolab.com/?user=${userData.githubUsername}&theme=dark&hide_border=true&card_width=497&bg_color=0d0d0d`}
-              stats={[]}
-            />
-          )}
-          {leetcodeData && (
+          {!leetcodeData ? (
+            <CardShimmer />
+          ) : (
             <LeetCodeCard
               platform="LeetCode Stats"
               stats={[
@@ -107,25 +138,30 @@ const ProfileDashboard = () => {
               imgUrl={`https://leetcard.jacoblin.cool/${userData.leetcodeUsername}?theme=dark&font=inter&ext=heatmap`}
             />
           )}
-          {codechefData && (
-            <CodeChefCard
-              platform="CodeChef Stats"
-              stats={[]}
-              imgUrl={`https://codechef-api.vercel.app/rating/${userData.codechefUsername}`}
-            />
-          )}
-          {codechefData && (
-            <CodeChefCard
-              platform="CodeChef Stats"
-              stats={[
-                { label: "Stars", value: codechefData.stars },
-                { label: "Max Rating", value: codechefData.highestRating },
-                { label: "Curr Rating", value: codechefData.currentRating },
-                { label: "Country Rank", value: codechefData.countryRank },
-                { label: "Global Rank", value: codechefData.globalRank },
-              ]}
-              imgUrl="x"
-            />
+          {!codechefData ? (
+            <>
+              <CardShimmer />
+              <CardShimmer />
+            </>
+          ) : (
+            <>
+              <CodeChefCard
+                platform="CodeChef Stats"
+                stats={[]}
+                imgUrl={`https://codechef-api.vercel.app/rating/${userData.codechefUsername}`}
+              />
+              <CodeChefCard
+                platform="CodeChef Stats"
+                stats={[
+                  { label: "Stars", value: codechefData.stars },
+                  { label: "Max Rating", value: codechefData.highestRating },
+                  { label: "Curr Rating", value: codechefData.currentRating },
+                  { label: "Country Rank", value: codechefData.countryRank },
+                  { label: "Global Rank", value: codechefData.globalRank },
+                ]}
+                imgUrl="x"
+              />
+            </>
           )}
         </div>
       </div>
