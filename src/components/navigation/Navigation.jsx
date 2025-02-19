@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FaBars, FaTimes, FaUser, FaSignOutAlt, FaUsers, FaComments, FaCode } from "react-icons/fa";
-
+import Username from "./Username";
+import NavItem from "./NavItem";
 const Navigation = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,7 +28,7 @@ const Navigation = () => {
             <NavItem to="/dashboard/college-chat" icon={<FaComments />}>College Chat</NavItem>
             <NavItem to="/dashboard/hackathons" icon={<FaCode />}>Hackathons</NavItem>
             <NavItem to={`/dashboard/profile/${username}`} icon={<FaUser />}>
-              {username || "Profile"}
+              <Username username={username} />
             </NavItem>
             <button
               onClick={handleLogout}
@@ -55,7 +56,7 @@ const Navigation = () => {
           <NavItem to="/dashboard/college-chat" icon={<FaComments />} onClick={() => setMenuOpen(false)}>College Chat</NavItem>
           <NavItem to="/dashboard/hackathons" icon={<FaCode />} onClick={() => setMenuOpen(false)}>Hackathons</NavItem>
           <NavItem to={`/dashboard/profile/${username}`} icon={<FaUser />} onClick={() => setMenuOpen(false)}>
-            {username || "Profile"}
+            <Username username={username} />
           </NavItem>
           <button
             onClick={() => {
@@ -72,16 +73,5 @@ const Navigation = () => {
     </nav>
   );
 };
-
-// NavItem Component for reusability
-const NavItem = ({ to, children, icon, onClick }) => (
-  <Link
-    to={to}
-    onClick={onClick}
-    className="flex items-center gap-2 text-lg text-gray-300 hover:text-blue-400 transition duration-300"
-  >
-    {icon} {children}
-  </Link>
-);
 
 export default Navigation;

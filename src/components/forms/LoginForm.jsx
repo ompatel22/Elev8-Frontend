@@ -56,7 +56,7 @@ const LoginForm = () => {
 
       if (!response.ok) {
         // Check if the backend response contains a message
-        throw new Error(data?.message || "Invalid credentials");
+        throw new Error("Invalid username or password");
       }
 
       setSuccess(true);
@@ -71,7 +71,7 @@ const LoginForm = () => {
       }, 1000);
     } catch (err) {
       // Ensure that error message is properly displayed
-      setError(err?.message || "An unexpected error occurred");
+      setError("Invalid username or password");
     } finally {
       setLoading(false);
     }

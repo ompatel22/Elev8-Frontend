@@ -84,7 +84,7 @@ const RegistrationForm = () => {
       </Link>
 
       {/* Main content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-10 py-20">
         <motion.div
           className="relative z-10 bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-xl shadow-2xl p-10 w-full max-w-3xl mx-auto backdrop-filter backdrop-blur-lg bg-opacity-50 border border-gray-700"
           initial={{ opacity: 0, y: 20 }}
@@ -173,18 +173,18 @@ const RegistrationForm = () => {
                 type: "text",
                 placeholder: "e.g., ompatel22",
               },
-              {
-                label: "HackerRank Username",
-                name: "hackerrankUsername",
-                type: "text",
-                placeholder: "e.g., ompatel22",
-              },
-              {
-                label: "Codeforces Username",
-                name: "codeforcesUsername",
-                type: "text",
-                placeholder: "e.g., ompatel22",
-              },
+              // {
+              //   label: "HackerRank Username",
+              //   name: "hackerrankUsername",
+              //   type: "text",
+              //   placeholder: "e.g., ompatel22",
+              // },
+              // {
+              //   label: "Codeforces Username",
+              //   name: "codeforcesUsername",
+              //   type: "text",
+              //   placeholder: "e.g., ompatel22",
+              // },
             ].map((field) => (
               <div
                 key={field.name}

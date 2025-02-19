@@ -7,6 +7,55 @@ import LeetCodeCard from "../profile/LeetcodeCard";
 import CodeChefCard from "../profile/CodeChefCard";
 import GradientBackground from "../background/GradientBackground";
 import ShimmerEffect from "../shimmer/ShimmerEffect";
+import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
+import { SiLeetcode, SiCodechef } from 'react-icons/si';
+import ProfileCard from "../profile/ProfileCard";
+
+const platformConfig = [
+  {
+    platform: "LinkedIn",
+    usernameKey: "linkedinurl",
+    icon: FaLinkedin,
+    baseUrl: "https://linkedin.com/in/",
+    bgColor: "bg-[#0077b5]/10 backdrop-blur-md"
+  },
+  {
+    platform: "Instagram",
+    usernameKey: "instagramusername",
+    icon: FaInstagram,
+    baseUrl: "https://instagram.com/",
+    bgColor: "bg-[#E1306C]/10 backdrop-blur-md"
+  },
+  {
+    platform: "GitHub",
+    usernameKey: "githubUsername",
+    icon: FaGithub,
+    baseUrl: "https://github.com/",
+    bgColor: "bg-[#333]/10 backdrop-blur-md"
+  },
+  {
+    platform: "Twitter",
+    usernameKey: "twitterusername",
+    icon: FaXTwitter,
+    baseUrl: "https://x.com/",
+    bgColor: "bg-[#000000]/10 backdrop-blur-md"
+  },
+  {
+    platform: "LeetCode",
+    usernameKey: "leetcodeUsername",
+    icon: SiLeetcode,
+    baseUrl: "https://leetcode.com/",
+    bgColor: "bg-[#FFA116]/10 backdrop-blur-md"
+  },
+  {
+    platform: "CodeChef",
+    usernameKey: "codechefUsername",
+    icon: SiCodechef,
+    baseUrl: "https://codechef.com/users/",
+    bgColor: "bg-[#5B4638]/10 backdrop-blur-md"
+  }
+];
 
 const ProfileDashboard = () => {
   const params = useParams();
@@ -63,7 +112,7 @@ const ProfileDashboard = () => {
   }, [success, userData]);
 
   const ProfileSectionShimmer = () => (
-    <div className="w-full md:w-80 bg-black/40 backdrop-blur-md rounded-lg p-6 h-[500px]">
+    <div className="w-full md:w-80 bg-black/40 backdrop-blur-md rounded-lg p-6 h-[400px]">
       <ShimmerEffect className="w-32 h-32 rounded-full mx-auto mb-4" />
       <ShimmerEffect className="h-6 w-3/4 mx-auto mb-3 rounded" />
       <ShimmerEffect className="h-4 w-1/2 mx-auto mb-6 rounded" />
@@ -72,14 +121,21 @@ const ProfileDashboard = () => {
   );
 
   const CardShimmer = () => (
-    <div className="bg-black/40 backdrop-blur-md rounded-lg p-6 h-[500px]">
-      <ShimmerEffect className="h-8 w-1/3 mb-6 rounded" />
-      <ShimmerEffect className="h-64 w-full rounded mb-6" />
-      <div className="space-y-3">
-        <ShimmerEffect className="h-4 w-2/3 rounded" />
-        <ShimmerEffect className="h-4 w-1/2 rounded" />
-        <ShimmerEffect className="h-4 w-3/4 rounded" />
+    <div className="bg-black/40 backdrop-blur-md rounded-lg p-6 h-[400px]">
+      <ShimmerEffect className="h-6 w-1/3 mb-4 rounded" />
+      <ShimmerEffect className="h-40 w-full rounded mb-4" />
+      <ShimmerEffect className="h-4 w-2/3 rounded mb-2" />
+      <ShimmerEffect className="h-4 w-1/2 rounded" />
+    </div>
+  );
+
+  const SocialCardShimmer = () => (
+    <div className={`bg-black/40 backdrop-blur-md rounded-lg p-4 flex flex-col gap-2`}>
+      <div className="flex items-center gap-2">
+        <ShimmerEffect className="h-8 w-8 rounded-full" />
+        <ShimmerEffect className="h-6 w-24 rounded" />
       </div>
+      <ShimmerEffect className="h-4 w-32 rounded" />
     </div>
   );
 
@@ -87,20 +143,47 @@ const ProfileDashboard = () => {
     <GradientBackground className="min-h-screen text-white flex flex-col p-6 pt-28">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left Side - Profile Section */}
-        {!success || !codechefData || !githubData ? (
-          <ProfileSectionShimmer />
-        ) : (
-          <ProfileSection
-            imageUrl={githubData.avatar_url}
-            countryFlagUrl={codechefData.countryFlag}
-            name={userData.displayName}
-            username={username}
-            bio="Learning. Growing. Blooming. Passionate developer with a love for problem-solving."
-          />
-        )}
+        <div className="flex flex-col gap-6 w-[32rem]">
+          {!success || !codechefData || !githubData ? (
+            <>
+              <ProfileSectionShimmer />
+              {/* Social Media Cards Grid with Shimmer */}
+              <div className="grid grid-cols-2 gap-2">
+                {[...Array(6)].map((_, index) => (
+                  <SocialCardShimmer key={index} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <ProfileSection
+                imageUrl={githubData.avatar_url}
+                countryFlagUrl={codechefData.countryFlag}
+                name={userData.displayName}
+                username={username}
+                bio={userData.bio}
+              />
+              {/* Social Media Cards Grid */}
+              <div className="grid grid-cols-2 gap-y-8 pl-12">
+                {platformConfig
+                  .filter(platform => userData[platform.usernameKey])
+                  .map((platform) => (
+                    <ProfileCard
+                      key={platform.platform}
+                      platform={platform.platform}
+                      username={userData[platform.usernameKey]}
+                      icon={platform.icon}
+                      link={`${platform.baseUrl}${userData[platform.usernameKey]}`}
+                      bgColor={platform.bgColor}
+                    />
+                  ))}
+              </div>
+            </>
+          )}
+        </div>
 
         {/* Right Side - Platform Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 pl-20">
           {!githubData ? (
             <>
               <CardShimmer />
