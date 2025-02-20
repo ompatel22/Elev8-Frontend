@@ -7,3 +7,19 @@ export const getAllStudyGroups = async () => {
     return response.data;
 };
 
+export const getMessagesOfAStudyGroup = async (studyGroupName, size = 50, page = 0) => {
+    console.log(studyGroupName);
+    const response = await httpClient.get(
+        `/study_group/${studyGroupName}/messages?size=${size}&page=${page}`
+    );
+    if (response) {
+        console.log(response.data);
+    }
+    else {
+        console.log("no data");
+
+    }
+
+    return response.data;
+};
+

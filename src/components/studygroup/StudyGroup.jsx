@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { getAllStudyGroups } from "../../services/StudyGroupService";
 import Navigation from "../navigation/Navigation";
 import { Link, useNavigate } from "react-router-dom";
+import StudyGroupChat from "./StudyGroupChat";
 
 function StudyGroup() {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-
+    const [groupName, setGroupName] = useState("");
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -27,6 +28,10 @@ function StudyGroup() {
             navigate("/login");
         }
     }, [navigate]);
+
+    const handleClick = (studyGroupName) => {
+        setGroupName(studyGroupName)
+    }
 
     return (
         <div className="flex flex-col h-screen bg-gray-900 text-white">
@@ -55,6 +60,7 @@ function StudyGroup() {
                                 <div
                                     key={group.id}
                                     className="mb-3 p-3 bg-gray-700 shadow-lg rounded-lg flex items-center transition-all hover:bg-gray-600"
+                                    onClick={() => handleClick(group.studyGroupName)}
                                 >
                                     {/* Group Image */}
                                     <img
@@ -80,8 +86,10 @@ function StudyGroup() {
                     )}
                 </div>
 
-                {/* Right Section */}
-                <div className="w-3/4 p-6 bg-gray-900"></div>
+                {/* Right Section with Fixed Input Box */}
+                <div className="w-3/4 flex flex-col h-full">
+                    <StudyGroupChat studyGroupName={groupName} />
+                </div>
             </div>
         </div>
     );

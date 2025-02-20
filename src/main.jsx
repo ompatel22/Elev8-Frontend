@@ -18,6 +18,7 @@ import CollegeChatUsersPage from "./pages/CollegeChatUsersPage.jsx";
 import ProfileEditForm from "./components/forms/ProfileEditForm.jsx";
 import StudyGroupPage from "./pages/StudyGroupPage.jsx";
 import CreateStudyGroup from "./components/studygroup/CreateStudyGroup.jsx";
+import StudyGroupUsers from "./components/studygroup/StudyGroupUsers.jsx";
 const appRouter = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/register", element: <RegistrationForm /> },
@@ -33,7 +34,8 @@ const appRouter = createBrowserRouter([
   { path: "dashboard/college-chat/:roomId/users", element: <CollegeChatUsersPage /> },
   { path: "/dashboard/profile/:username/edit", element: <ProfileEditForm /> },
   { path: "/dashboard/study-groups", element: <StudyGroupPage /> },
-  { path: "/dashboard/study-group/create-study-group", element: <CreateStudyGroup /> }
+  { path: "/dashboard/study-group/create-study-group", element: <CreateStudyGroup /> },
+  { path: "/dashboard/study-group/:groupName/users", element: <StudyGroupUsers /> }
 ]);
 
 createRoot(document.getElementById("root")).render(
