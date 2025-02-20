@@ -15,8 +15,8 @@ const Navigation = () => {
 
   return (
     <nav className="bg-gray-900/80 backdrop-blur-lg text-white shadow-lg fixed w-full z-50">
-    <div className="px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-20">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/dashboard" className="text-3xl font-extrabold tracking-wide text-blue-400">
             Elev8 🚀

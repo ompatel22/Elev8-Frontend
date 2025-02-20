@@ -20,6 +20,6 @@ export const getMessagess = async (roomId, size = 50, page = 0) => {
     `/rooms/${roomId}/messages?size=${size}&page=${page}`
   );
   console.log(response.data);
-  
+
   return response.data;
 };

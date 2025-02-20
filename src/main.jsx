@@ -16,6 +16,8 @@ import HackathonRequestPage from "./pages/HackathonRequestPage.jsx";
 import HackathonRequestStatusPage from "./pages/HackathonRequestStatusPage.jsx";
 import CollegeChatUsersPage from "./pages/CollegeChatUsersPage.jsx";
 import ProfileEditForm from "./components/forms/ProfileEditForm.jsx";
+import StudyGroupPage from "./pages/StudyGroupPage.jsx";
+import CreateStudyGroup from "./components/studygroup/CreateStudyGroup.jsx";
 const appRouter = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/register", element: <RegistrationForm /> },
@@ -29,7 +31,9 @@ const appRouter = createBrowserRouter([
   { path: "/dashboard/hackathons/requests/status", element: <HackathonRequestStatusPage /> },
   { path: "/dashboard/college-chat/", element: <CollegeChatPage /> },
   { path: "dashboard/college-chat/:roomId/users", element: <CollegeChatUsersPage /> },
-  { path: "/dashboard/profile/:username/edit", element: <ProfileEditForm /> }
+  { path: "/dashboard/profile/:username/edit", element: <ProfileEditForm /> },
+  { path: "/dashboard/study-groups", element: <StudyGroupPage /> },
+  { path: "/dashboard/study-group/create-study-group", element: <CreateStudyGroup /> }
 ]);
 
 createRoot(document.getElementById("root")).render(
