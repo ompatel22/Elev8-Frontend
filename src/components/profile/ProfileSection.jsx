@@ -11,11 +11,16 @@ const ProfileSection = ({ imageUrl, name, username, bio, countryFlagUrl, coverIm
       
       {/* Profile Content */}
       <div className="relative pt-10 flex flex-col items-center text-center space-y-4 pb-10 ml-8 mt-16">
-          <img
-            src={imageUrl}
-            alt={name}
-            className="w-48 h-48 rounded-full border-4 border-blue-500 shadow-lg"
-          />
+          <div className="relative">
+            <img
+              src={imageUrl}
+              alt={name}
+              className="w-48 h-48 rounded-full border-4 border-blue-500 shadow-lg"
+            />
+            <div className="absolute bottom-2 right-2 bg-blue-500 rounded-full p-1 border-2 border-white w-15 h-15">
+              <span className="text-white text-4xl">👨🏻‍💻</span>
+            </div>
+          </div>
         <div className="flex items-center space-x-2 pt-2">
           <h1 className="text-3xl font-bold text-white">{name}</h1>
           {countryFlagUrl && (

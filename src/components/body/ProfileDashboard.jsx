@@ -128,11 +128,12 @@ const ProfileDashboard = () => {
   }, [success, userData]);
 
   const ProfileSectionShimmer = () => (
-    <div className="w-full md:w-80 bg-black/40 backdrop-blur-md rounded-lg p-6 h-[400px]">
-      <ShimmerEffect className="w-32 h-32 rounded-full mx-auto mb-4" />
-      <ShimmerEffect className="h-6 w-3/4 mx-auto mb-3 rounded" />
-      <ShimmerEffect className="h-4 w-1/2 mx-auto mb-6 rounded" />
-      <ShimmerEffect className="h-20 w-full rounded mb-4" />
+    <div className="w-full md:w-[32rem] bg-black/40 backdrop-blur-md rounded-lg p-6 h-[500px] mx-auto">
+      <ShimmerEffect className="w-full h-32 rounded-t-lg mb-4" />
+      <ShimmerEffect className="w-40 h-40 rounded-full mx-auto mb-4" />
+      <ShimmerEffect className="h-8 w-3/4 mx-auto mb-3 rounded" />
+      <ShimmerEffect className="h-6 w-1/2 mx-auto mb-6 rounded" />
+      <ShimmerEffect className="h-24 w-full rounded mb-4" />
     </div>
   );
 
@@ -146,14 +147,13 @@ const ProfileDashboard = () => {
   );
 
   const SocialCardShimmer = () => (
-    <div
-      className={`bg-black/40 backdrop-blur-md rounded-lg p-4 flex flex-col gap-2`}
-    >
-      <div className="flex items-center gap-2">
-        <ShimmerEffect className="h-8 w-8 rounded-full" />
-        <ShimmerEffect className="h-6 w-24 rounded" />
+    <div className="bg-black/40 backdrop-blur-md rounded-lg p-6 size-52 mt-10">
+      <div className="flex flex-col items-center gap-3">
+        <ShimmerEffect className="w-8 h-8 rounded-full" />
+        <ShimmerEffect className="h-7 w-24 rounded" />
+        <ShimmerEffect className="h-5 w-32 rounded" />
+        <ShimmerEffect className="h-8 w-24 rounded-full mt-1" />
       </div>
-      <ShimmerEffect className="h-4 w-32 rounded" />
     </div>
   );
 
@@ -166,8 +166,8 @@ const ProfileDashboard = () => {
             <>
               <ProfileSectionShimmer />
               {/* Social Media Cards Grid with Shimmer */}
-              <div className="grid grid-cols-2 gap-2">
-                {[...Array(6)].map((_, index) => (
+              <div className="grid grid-cols-2 gap-y-8 pl-12">
+                {[...Array(8)].map((_, index) => (
                   <SocialCardShimmer key={index} />
                 ))}
               </div>
