@@ -83,7 +83,7 @@ const ProfileEditForm = () => {
 
     if (formData.linkedinurl && !urlRegex.test(formData.linkedinurl)) 
       errors.linkedinurl = "Please enter a valid URL";
-
+    
     return errors;
   };
 
@@ -178,9 +178,9 @@ const ProfileEditForm = () => {
                 />
 
                 <Input
-                  label="Display Name (optional)"
+                  label="Display Name"
                   icon={User}
-                  placeholder="Enter display name"
+                  placeholder="Enter display name (optional)"
                   value={formData.displayName}
                   onChange={(e) => handleInputChange("displayName", e.target.value)}
                   error={formErrors.displayName}
@@ -252,6 +252,24 @@ const ProfileEditForm = () => {
                   placeholder="Enter Instagram username (optional)"
                   value={formData.instagramusername}
                   onChange={(e) => handleInputChange("instagramusername", e.target.value)}
+                />
+
+                <Input
+                  label="Resume URL"
+                  icon={FileCode}
+                  placeholder="Enter resume URL (optional)"
+                  value={formData.resumeUrl}
+                  onChange={(e) => handleInputChange("resumeUrl", e.target.value)}
+                  error={formErrors.resumeUrl}
+                />
+
+                <Input
+                  label="Portfolio URL"
+                  icon={Code}
+                  placeholder="Enter portfolio URL (optional)"
+                  value={formData.portfolioUrl}
+                  onChange={(e) => handleInputChange("portfolioUrl", e.target.value)}
+                  error={formErrors.portfolioUrl}
                 />
               </div>
 

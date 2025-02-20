@@ -7,54 +7,69 @@ import LeetCodeCard from "../profile/LeetcodeCard";
 import CodeChefCard from "../profile/CodeChefCard";
 import GradientBackground from "../background/GradientBackground";
 import ShimmerEffect from "../shimmer/ShimmerEffect";
-import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
-import { SiLeetcode, SiCodechef } from 'react-icons/si';
+import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { SiLeetcode, SiCodechef } from "react-icons/si";
 import ProfileCard from "../profile/ProfileCard";
+import { FaGlobe, FaFileAlt } from "react-icons/fa";
 
 const platformConfig = [
+  {
+    platform: "Portfolio",
+    usernameKey: "portfolioUrl",
+    icon: FaGlobe,
+    baseUrl: "",
+    bgColor: "bg-[#4CAF50]/10 backdrop-blur-md",
+  },
+  {
+    platform: "Resume",
+    usernameKey: "resumeUrl",
+    icon: FaFileAlt,
+    baseUrl: "",
+    bgColor: "bg-[#FF5722]/10 backdrop-blur-md",
+  },
   {
     platform: "LinkedIn",
     usernameKey: "linkedinurl",
     icon: FaLinkedin,
     baseUrl: "https://linkedin.com/in/",
-    bgColor: "bg-[#0077b5]/10 backdrop-blur-md"
+    bgColor: "bg-[#0077b5]/10 backdrop-blur-md",
   },
   {
     platform: "Instagram",
     usernameKey: "instagramusername",
     icon: FaInstagram,
     baseUrl: "https://instagram.com/",
-    bgColor: "bg-[#E1306C]/10 backdrop-blur-md"
+    bgColor: "bg-[#E1306C]/10 backdrop-blur-md",
   },
   {
     platform: "GitHub",
     usernameKey: "githubUsername",
     icon: FaGithub,
     baseUrl: "https://github.com/",
-    bgColor: "bg-[#333]/10 backdrop-blur-md"
+    bgColor: "bg-[#333]/10 backdrop-blur-md",
   },
   {
     platform: "Twitter",
     usernameKey: "twitterusername",
     icon: FaXTwitter,
     baseUrl: "https://x.com/",
-    bgColor: "bg-[#000000]/10 backdrop-blur-md"
+    bgColor: "bg-[#000000]/10 backdrop-blur-md",
   },
   {
     platform: "LeetCode",
     usernameKey: "leetcodeUsername",
     icon: SiLeetcode,
     baseUrl: "https://leetcode.com/",
-    bgColor: "bg-[#FFA116]/10 backdrop-blur-md"
+    bgColor: "bg-[#FFA116]/10 backdrop-blur-md",
   },
   {
     platform: "CodeChef",
     usernameKey: "codechefUsername",
     icon: SiCodechef,
     baseUrl: "https://codechef.com/users/",
-    bgColor: "bg-[#5B4638]/10 backdrop-blur-md"
-  }
+    bgColor: "bg-[#5B4638]/10 backdrop-blur-md",
+  },
 ];
 
 const ProfileDashboard = () => {
@@ -74,6 +89,7 @@ const ProfileDashboard = () => {
       .then((response) => {
         console.log(response.data);
         setUserData(response.data);
+        setUserData({...response.data, resumeUrl: "https://www.linkedin.com/in/om-patel-22122004u/", portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/"});
         setSuccess(true);
       })
       .catch((error) => console.error("Error fetching user data:", error));
@@ -82,7 +98,7 @@ const ProfileDashboard = () => {
   // Fetch platform data only when userData is successfully set
   useEffect(() => {
     if (success && userData.username) {
-      console.log("Updated userData:", userData);
+      // console.log("Updated userData:", userData);
 
       // Fetch GitHub data
       axios
@@ -130,7 +146,9 @@ const ProfileDashboard = () => {
   );
 
   const SocialCardShimmer = () => (
-    <div className={`bg-black/40 backdrop-blur-md rounded-lg p-4 flex flex-col gap-2`}>
+    <div
+      className={`bg-black/40 backdrop-blur-md rounded-lg p-4 flex flex-col gap-2`}
+    >
       <div className="flex items-center gap-2">
         <ShimmerEffect className="h-8 w-8 rounded-full" />
         <ShimmerEffect className="h-6 w-24 rounded" />
@@ -162,18 +180,23 @@ const ProfileDashboard = () => {
                 name={userData.displayName}
                 username={username}
                 bio={userData.bio}
+                coverImageUrl={
+                  "https://images.unsplash.com/photo-1504805572947-34fad45aed93?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFjZWJvb2slMjBjb3ZlcnxlbnwwfHwwfHx8MA%3D%3D"
+                }
               />
               {/* Social Media Cards Grid */}
               <div className="grid grid-cols-2 gap-y-8 pl-12">
                 {platformConfig
-                  .filter(platform => userData[platform.usernameKey])
+                  .filter((platform) => userData[platform.usernameKey])
                   .map((platform) => (
                     <ProfileCard
                       key={platform.platform}
                       platform={platform.platform}
                       username={userData[platform.usernameKey]}
                       icon={platform.icon}
-                      link={`${platform.baseUrl}${userData[platform.usernameKey]}`}
+                      link={`${platform.baseUrl}${
+                        userData[platform.usernameKey]
+                      }`}
                       bgColor={platform.bgColor}
                     />
                   ))}
@@ -196,7 +219,10 @@ const ProfileDashboard = () => {
                 imgUrl1={`https://github-readme-stats.vercel.app/api?username=${userData.githubUsername}&show_icons=true&theme=tokyonight&rank_icon=github&hide_border=true&bg_color=0d0d0d`}
                 imgUrl2={`https://github-readme-stats.vercel.app/api/top-langs/?username=${userData.githubUsername}&layout=compact&theme=tokyonight&hide_border=true&bg_color=0d0d0d&card_width=466`}
                 stats={[
-                  { label: "Total Repositories", value: githubData.public_repos },
+                  {
+                    label: "Total Repositories",
+                    value: githubData.public_repos,
+                  },
                   { label: "Followers", value: githubData.followers },
                   { label: "Following", value: githubData.following },
                 ]}
@@ -215,7 +241,10 @@ const ProfileDashboard = () => {
             <LeetCodeCard
               platform="LeetCode Stats"
               stats={[
-                { label: "Acceptance Rate", value: leetcodeData.acceptanceRate },
+                {
+                  label: "Acceptance Rate",
+                  value: leetcodeData.acceptanceRate,
+                },
                 { label: "Ranking", value: leetcodeData.ranking },
               ]}
               imgUrl={`https://leetcard.jacoblin.cool/${userData.leetcodeUsername}?theme=dark&font=inter&ext=heatmap`}
