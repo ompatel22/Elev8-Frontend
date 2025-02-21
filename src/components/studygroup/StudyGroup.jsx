@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { getAllStudyGroups } from "../../services/StudyGroupService";
 import Navigation from "../navigation/Navigation";
 import { Link, useNavigate } from "react-router-dom";
 import StudyGroupChat from "./StudyGroupChat";
 import JoinStudyGroup from "./JoinStudyGroup";
 import axios from "axios";
+import { debounce } from "lodash";
+import { FaSearch } from "react-icons/fa";
 
 function StudyGroup() {
     const [data, setData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const navigate = useNavigate();
     const [groupName, setGroupName] = useState("");
     const [flag, setFlag] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getAllStudyGroups();
                 setData(response);
+                setFilteredData(response);
             } catch (error) {
                 console.error("Error fetching study groups:", error);
             }
         };
-
         fetchData();
     }, []);
 
@@ -35,18 +39,15 @@ function StudyGroup() {
     const handleClick = async (studyGroupName) => {
         setGroupName(studyGroupName);
         setFlag(null);
-
         const username = localStorage.getItem("username");
         if (!username) {
             console.error("Username not found in localStorage.");
             return;
         }
-
         try {
             const response = await axios.get(
                 `http://localhost:8080/api/v1/study_group/${studyGroupName}/user/${username}`
             );
-
             if (response.status === 200 && response.data) {
                 setFlag(true);
             } else {
@@ -62,6 +63,21 @@ function StudyGroup() {
         }
     };
 
+    const debouncedSearch = useCallback(
+        debounce((query) => {
+            const filtered = data.filter(group =>
+                group.studyGroupName.toLowerCase().includes(query.toLowerCase())
+            );
+            setFilteredData(filtered);
+        }, 300),
+        [data]
+    );
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+        debouncedSearch(event.target.value);
+    };
+
     return (
         <div className="flex flex-col h-screen bg-gray-900 text-white">
             {/* Navigation Bar */}
@@ -73,19 +89,32 @@ function StudyGroup() {
             <div className="flex flex-1 pt-20">
                 {/* Left Sidebar (Study Groups List) */}
                 <div className="w-1/4 p-4 border-r border-gray-700 bg-gray-800 h-[calc(100vh-4rem)] overflow-y-auto">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-xl font-bold text-gray-100">Study Groups</h2>
+                    <div className="flex items-center space-x-2 mb-4">
+                        <div className="relative flex-1">
+                            <input
+                                type="text"
+                                placeholder="Search now..."
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                className="w-full pl-10 pr-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        </div>
                         <Link to={`/dashboard/study-group/create-study-group`}>
-                            <button className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-500 transition-all">
+                            <button className="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-500 transition-all">
                                 + Create
                             </button>
                         </Link>
                     </div>
 
+
+                    {/* Search Input */}
+
+
                     {/* Scrollable Study Groups List */}
                     <div className="space-y-3">
-                        {data.length > 0 ? (
-                            data.map((group) => (
+                        {filteredData.length > 0 ? (
+                            filteredData.map((group) => (
                                 <div
                                     key={group.id}
                                     className="p-3 bg-gray-700 shadow-lg rounded-lg flex items-center cursor-pointer hover:bg-gray-600 transition-all"
@@ -127,7 +156,6 @@ function StudyGroup() {
                     )}
                 </div>
             </div>
-
         </div>
     );
 }
