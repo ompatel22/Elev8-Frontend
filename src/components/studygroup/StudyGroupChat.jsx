@@ -107,7 +107,7 @@ const StudyGroupChat = ({ studyGroupName }) => {
     return (
         <div className="flex flex-col h-full">
             {/* Header */}
-            <header className="dark:border-gray-700 py-5 shadow flex justify-center items-center dark:bg-gray-900">
+            <header className="dark:border-gray-700 py-5 shadow flex justify-center items-center dark:bg-gray-900 pt-8">
                 <Link to={`/dashboard/study-group/${groupName}/users`}>
                     <h1 className="text-2xl font-extrabold tracking-wide text-blue-400">
                         {groupName} Group
