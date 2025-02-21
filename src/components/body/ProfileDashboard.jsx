@@ -89,7 +89,7 @@ const ProfileDashboard = () => {
       .then((response) => {
         console.log(response.data);
         setUserData(response.data);
-        setUserData({ ...response.data, resumeUrl: "https://www.linkedin.com/in/om-patel-22122004u/", portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/" });
+        setUserData({ ...response.data, resumeUrl: "https://pdf.ac/2myAip", portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/" });
         setSuccess(true);
       })
       .catch((error) => console.error("Error fetching user data:", error));
@@ -272,11 +272,18 @@ const ProfileDashboard = () => {
                 ]}
                 imgUrl="x"
               />
+              {/* Added GIF after CodeChef cards */}
+              <div className="bg-gray-900 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 backdrop-blur-md border border-gray-700">
+                <img 
+                  src="https://media.tenor.com/YZPnGuPeZv8AAAAd/coding.gif" 
+                  alt="Coding animation"
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
             </>
           )}
         </div>
       </div>
-      {/* {console.log("lc", leetcodeData, "cc", codechefData, "gh", githubData)} */}
     </GradientBackground>
   );
 };

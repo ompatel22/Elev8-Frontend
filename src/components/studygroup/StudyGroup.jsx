@@ -7,6 +7,7 @@ import JoinStudyGroup from "./JoinStudyGroup";
 import axios from "axios";
 import { debounce } from "lodash";
 import { FaSearch } from "react-icons/fa";
+import GradientBackground from "../background/GradientBackground"
 
 function StudyGroup() {
     const [data, setData] = useState([]);
@@ -79,7 +80,8 @@ function StudyGroup() {
     };
 
     return (
-        <div className="flex flex-col h-screen bg-gray-900 text-white">
+        <GradientBackground>
+        <div className="flex flex-col h-screen text-white">
             {/* Navigation Bar */}
             <div className="fixed top-0 left-0 w-full z-50">
                 <Navigation />
@@ -88,7 +90,7 @@ function StudyGroup() {
             {/* Main Content */}
             <div className="flex flex-1 pt-20">
                 {/* Left Sidebar (Study Groups List) */}
-                <div className="w-1/4 p-4 border-r border-gray-700 bg-gray-800 h-[calc(100vh-4rem)] overflow-y-auto">
+                <div className="w-1/4 p-4 border-r bg-gray-900 border-gray-700 h-[calc(100vh-4rem)] overflow-y-auto">
                     <div className="flex items-center space-x-2 mb-4">
                         <div className="relative flex-1">
                             <input
@@ -121,7 +123,7 @@ function StudyGroup() {
                                     onClick={() => handleClick(group.studyGroupName)}
                                 >
                                     <img
-                                        src="https://cdn-icons-png.flaticon.com/512/21/21104.png"
+                                        src="https://t3.ftcdn.net/jpg/03/56/73/14/360_F_356731435_KWwMysbXYKSHjQAIkja9PlvJBzd0Y4Xi.jpg"
                                         alt="Group Icon"
                                         className="w-12 h-12 rounded-full mr-3"
                                     />
@@ -142,7 +144,7 @@ function StudyGroup() {
                 </div>
 
                 {/* Right Section (Chat or Join Study Group) */}
-                <div className="w-3/4 flex flex-col h-[calc(100vh-4rem)] bg-gray-900 overflow-hidden">
+                <div className="w-3/4 flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
                     {flag === null ? (
                         <div className="flex flex-col items-center justify-center h-full">
                             <p className="text-gray-500">Select a study group to continue</p>
@@ -157,6 +159,7 @@ function StudyGroup() {
                 </div>
             </div>
         </div>
+        </GradientBackground>
     );
 }
 
