@@ -116,9 +116,12 @@ const StudyGroupChat = ({ studyGroupName }) => {
             </header>
 
             {/* Chat Messages */}
-            <main ref={chatBoxRef} className="flex-1 px-10 py-4 dark:bg-slate-600 overflow-auto">
+            <main
+                ref={chatBoxRef}
+                className="flex-1 px-10 py-4 dark:bg-slate-600 overflow-y-auto h-full max-h-[calc(100vh-160px)]"
+            >
                 <div className="flex flex-col gap-3">
-                    {messages.map((message, index) => ( // ✅ No need for `.reverse()`
+                    {messages.map((message, index) => (
                         <div
                             key={index}
                             className={`flex ${message.sender === currentUser ? "justify-end" : "justify-start"}`}
@@ -147,6 +150,7 @@ const StudyGroupChat = ({ studyGroupName }) => {
                     <div ref={messagesEndRef} />
                 </div>
             </main>
+
 
             {/* Input Box */}
             <div className="w-full px-10 py-4 bg-gray-900">

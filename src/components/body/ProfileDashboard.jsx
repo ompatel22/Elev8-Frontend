@@ -89,7 +89,7 @@ const ProfileDashboard = () => {
       .then((response) => {
         console.log(response.data);
         setUserData(response.data);
-        setUserData({...response.data, resumeUrl: "https://www.linkedin.com/in/om-patel-22122004u/", portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/"});
+        setUserData({ ...response.data, resumeUrl: "https://www.linkedin.com/in/om-patel-22122004u/", portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/" });
         setSuccess(true);
       })
       .catch((error) => console.error("Error fetching user data:", error));
@@ -194,9 +194,8 @@ const ProfileDashboard = () => {
                       platform={platform.platform}
                       username={userData[platform.usernameKey]}
                       icon={platform.icon}
-                      link={`${platform.baseUrl}${
-                        userData[platform.usernameKey]
-                      }`}
+                      link={`${platform.baseUrl}${userData[platform.usernameKey]
+                        }`}
                       bgColor={platform.bgColor}
                     />
                   ))}
