@@ -1,43 +1,50 @@
-import React from "react";
 import axios from "axios";
 
 function JoinStudyGroup({ studyGroupName }) {
     const handleJoin = async () => {
         const username = localStorage.getItem("username");
         if (!username) {
-
             console.error("Username not found in localStorage.");
             return;
         }
         console.log("Attempting to join as:", username);
 
         try {
-            await axios.get(`http://localhost:8080/api/v1/study_group/${studyGroupName}/user/${username}`);
-            console.log("User is already in the study group.");
-            alert("You are already in this study group!");
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                console.warn(`User ${username} not found in ${studyGroupName}. Proceeding to join.`);
+            // Fetch the user
+            const userResponse = await axios.get(`http://localhost:8080/api/users/${username}`);
+            const user = userResponse.data;  // Use a local variable
+            console.log("Fetched user:", user);
 
-                try {
-                    const response = await axios.post(
-                        `http://localhost:8080/api/v1/study_group/${studyGroupName}/join_study_group`,
-                        { username }  // Corrected payload
-                    );
+            // Check if user is already in the study group
+            try {
+                await axios.get(`http://localhost:8080/api/v1/study_group/${studyGroupName}/user/${username}`);
+                console.log("User is already in the study group.");
+                alert("You are already in this study group!");
+            } catch (error) {
+                if (error.response && error.response.status === 400) {
+                    console.warn(`User ${username} not found in ${studyGroupName}. Proceeding to join.`);
 
-                    if (response.status === 200) {
-                        window.location.reload();
+                    try {
+                        const response = await axios.post(
+                            `http://localhost:8080/api/v1/study_group/${studyGroupName}/join_study_group`,
+                            user  // Send user directly
+                        );
+
+                        if (response.status === 200) {
+                            window.location.reload();
+                        }
+                    } catch (joinError) {
+                        console.error("Error joining study group:", joinError);
+                        alert("Failed to join the study group. Please try again.");
                     }
-                } catch (joinError) {
-                    console.error("Error joining study group:", joinError);
-                    alert("Failed to join the study group. Please try again.");
+                } else {
+                    console.error("Unexpected error checking study group membership:", error);
                 }
-            } else {
-                console.error("Unexpected error checking study group membership:", error);
             }
+        } catch (fetchError) {
+            console.error("Error fetching user:", fetchError.response);
         }
     };
-
 
     return (
         <div className="flex flex-col items-center justify-center h-full">

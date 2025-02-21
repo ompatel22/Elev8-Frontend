@@ -5,7 +5,7 @@ import Navigation from "../navigation/Navigation";
 import { Typewriter } from "react-simple-typewriter";
 
 const StudyGroupUsers = () => {
-    const { groupName } = useParams();
+    const {     groupName } = useParams();
     const [collegeData, setCollegeData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
