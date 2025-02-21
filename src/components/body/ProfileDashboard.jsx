@@ -7,11 +7,11 @@ import LeetCodeCard from "../profile/LeetcodeCard";
 import CodeChefCard from "../profile/CodeChefCard";
 import GradientBackground from "../background/GradientBackground";
 import ShimmerEffect from "../shimmer/ShimmerEffect";
-import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaInstagram, FaTrophy } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiLeetcode, SiCodechef } from "react-icons/si";
 import ProfileCard from "../profile/ProfileCard";
-import { FaGlobe, FaFileAlt } from "react-icons/fa";
+import { FaGlobe, FaFileAlt, FaAward, FaCertificate } from "react-icons/fa";
 
 const platformConfig = [
   {
@@ -73,6 +73,50 @@ const platformConfig = [
 ];
 
 const ProfileDashboard = () => {
+  // New achievements data
+  // const achievements = [
+  //   {
+  //     title: "Competitive Programming",
+  //     description: "Achieved 5⭐ on CodeChef",
+  //     icon: FaAward,
+  //   },
+  //   {
+  //     title: "Open Source",
+  //     description: "100+ GitHub Contributions",
+  //     icon: FaGithub,
+  //   },
+  //   {
+  //     title: "LeetCode",
+  //     description: "Solved 500+ Problems",
+  //     icon: SiLeetcode,
+  //   },
+  // ];
+
+  // New certifications data
+  const certifications = [
+    {
+      name: "AWS Solutions Architect",
+      issuer: "Amazon",
+      date: "2024",
+      icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQb5FKMJ9_7cNMn5hHolhZ3CtyrSXiVbyvNA&s",
+      color: "text-orange-400",
+    },
+    {
+      name: "TensorFlow Developer",
+      issuer: "Google",
+      date: "2023",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg",
+      color: "text-blue-400",
+    },
+    {
+      name: "Meta Backend Developer",
+      issuer: "Meta",
+      date: "2023",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Meta-Logo.png",
+      color: "text-green-400",
+    },
+  ];
+
   const params = useParams();
   const [success, setSuccess] = useState(false);
   const [userData, setUserData] = useState({});
@@ -89,7 +133,11 @@ const ProfileDashboard = () => {
       .then((response) => {
         console.log(response.data);
         setUserData(response.data);
-        setUserData({ ...response.data, resumeUrl: "https://pdf.ac/2myAip", portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/" });
+        setUserData({
+          ...response.data,
+          resumeUrl: "https://pdf.ac/2myAip",
+          portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/",
+        });
         setSuccess(true);
       })
       .catch((error) => console.error("Error fetching user data:", error));
@@ -184,6 +232,60 @@ const ProfileDashboard = () => {
                   "https://images.unsplash.com/photo-1504805572947-34fad45aed93?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFjZWJvb2slMjBjb3ZlcnxlbnwwfHwwfHx8MA%3D%3D"
                 }
               />
+              {/* 
+              <div className="bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition duration-300 backdrop-blur-md border border-gray-700 ml-10 mb-10">
+                <div className="flex items-center gap-2 mb-4 ml-10">
+                  <FaTrophy className="text-yellow-400 text-xl" />
+                  <h3 className="text-lg font-semibold">Achievements</h3>
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  {achievements.map((achievement, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 p-3 bg-black/30 rounded-lg backdrop-blur-sm hover:bg-black/40 transition-all duration-300"
+                    >
+                      <achievement.icon
+                        className={`text-2xl ${achievement.color}`}
+                      />
+                      <div>
+                        <h4 className="font-medium">{achievement.title}</h4>
+                        <p className="text-sm text-gray-400">
+                          {achievement.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div> */}
+
+              {/* Add Certifications Section before Stats Overview */}
+              <div className="bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition duration-300 backdrop-blur-md border border-gray-700 ml-10 mb-6">
+                <div className="flex items-center gap-2 mb-6">
+                  <FaCertificate className="text-yellow-400 text-xl" />
+                  <h3 className="text-lg font-semibold">
+                    Professional Certifications
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {certifications.map((cert, index) => (
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 mb-3 rounded-full bg-white/10 flex items-center justify-center">
+                        <img
+                          src={cert.icon}
+                          alt={cert.issuer}
+                          className="w-15 h-15 rounded-full shadow-lg bg-cover bg-center"
+                        />
+                      </div>
+                      <h4 className={`font-medium ${cert.color} mb-1`}>
+                        {cert.name}
+                      </h4>
+                      <p className="text-sm text-gray-400">{cert.issuer}</p>
+                      <p className="text-xs text-gray-500 mt-1">{cert.date}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Social Media Cards Grid */}
               <div className="grid grid-cols-2 gap-y-8 pl-12">
                 {platformConfig
@@ -194,8 +296,9 @@ const ProfileDashboard = () => {
                       platform={platform.platform}
                       username={userData[platform.usernameKey]}
                       icon={platform.icon}
-                      link={`${platform.baseUrl}${userData[platform.usernameKey]
-                        }`}
+                      link={`${platform.baseUrl}${
+                        userData[platform.usernameKey]
+                      }`}
                       bgColor={platform.bgColor}
                     />
                   ))}
@@ -274,8 +377,8 @@ const ProfileDashboard = () => {
               />
               {/* Added GIF after CodeChef cards */}
               <div className="bg-gray-900 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 backdrop-blur-md border border-gray-700">
-                <img 
-                  src="https://media.tenor.com/YZPnGuPeZv8AAAAd/coding.gif" 
+                <img
+                  src="https://media.tenor.com/YZPnGuPeZv8AAAAd/coding.gif"
                   alt="Coding animation"
                   className="w-full h-auto rounded-lg"
                 />
