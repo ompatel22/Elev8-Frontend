@@ -70,7 +70,7 @@ function StudyGroup() {
             </div>
 
             {/* Main Content */}
-            <div className="flex flex-1 pt-16">
+            <div className="flex flex-1 pt-20">
                 {/* Left Sidebar (Study Groups List) */}
                 <div className="w-1/4 p-4 border-r border-gray-700 bg-gray-800 h-[calc(100vh-4rem)] overflow-y-auto">
                     <div className="flex items-center justify-between mb-4">
