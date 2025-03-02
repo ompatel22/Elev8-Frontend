@@ -7,7 +7,7 @@ const LeetCodeCard = ({ platform, stats, imgUrl }) => {
       <div className="flex justify-center pb-2">
         <img src={imgUrl} alt={`${platform} Stats`} />
       </div>
-      <div className="space-y-2 mt-4">
+      <div className="space-y-2 mt-8">
         {stats.map((stat, index) => (
           <div key={index} className="flex justify-between pb-2">
             <span className="text-gray-400">{stat.label}</span>

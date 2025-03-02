@@ -1,5 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { User, Lock, Mail, Building, Github, Code, FileCode, BookOpen, Linkedin, Twitter, Instagram } from "lucide-react";
+import {
+  User,
+  Lock,
+  Mail,
+  Building,
+  Github,
+  Code,
+  FileCode,
+  BookOpen,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Film,
+  Image,
+  Sticker,
+} from "lucide-react";
 import Navigation from "../navigation/Navigation";
 import GradientBackground from "../background/GradientBackground";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +35,9 @@ const Input = ({ label, error, icon: Icon, ...props }) => (
         </div>
       )}
       <input
-        className={`w-full ${Icon ? 'pl-10' : 'pl-3'} py-2 bg-gray-900/50 border ${
+        className={`w-full ${
+          Icon ? "pl-10" : "pl-3"
+        } py-2 bg-gray-900/50 border ${
           error ? "border-red-500" : "border-gray-700"
         } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400`}
         {...props}
@@ -66,7 +83,46 @@ const ProfileEditForm = () => {
     linkedinurl: null,
     twitterusername: null,
     instagramusername: null,
+    portfolioUrl: null,
+    resumeUrl: null,
+    gifUrl: null,
+    coverPhotoUrl: null,
+    emoji: null,
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/users/${localStorage.getItem("username")}`
+        );
+        console.log(response.data);
+
+        const profile = response.data;
+        setFormData({
+          username: null,
+          displayName: profile.displayName,
+          email: profile.email,
+          collegeName: profile.collegeName,
+          githubUsername: profile.githubUsername,
+          leetcodeUsername: profile.leetcodeUsername,
+          codechefUsername: profile.codechefUsername,
+          bio: profile.bio,
+          linkedinurl: profile.linkedinurl,
+          twitterusername: profile.twitterusername,
+          instagramusername: profile.instagramusername,
+          resumeUrl: profile.resumeUrl,
+          portfolioUrl: profile.portfolioUrl,
+          gifUrl: profile.gifUrl,
+          coverPhotoUrl: profile.coverPhotoUrl,
+          emoji: profile.emoji,
+        });
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to fetch profile");
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const [formErrors, setFormErrors] = useState({});
 
@@ -75,15 +131,15 @@ const ProfileEditForm = () => {
 
     // URL validations
     const urlRegex = /^https?:\/\/.+/;
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (formData.email && !emailRegex.test(formData.email)) 
+    if (formData.email && !emailRegex.test(formData.email))
       errors.email = "Please enter a valid email";
 
-    if (formData.linkedinurl && !urlRegex.test(formData.linkedinurl)) 
+    if (formData.linkedinurl && !urlRegex.test(formData.linkedinurl))
       errors.linkedinurl = "Please enter a valid URL";
-    
+
     return errors;
   };
 
@@ -161,9 +217,11 @@ const ProfileEditForm = () => {
                 <Input
                   label="Username"
                   icon={User}
-                  placeholder="Enter username (optional)"
+                  placeholder="Enter new username (optional)"
                   value={formData.username}
-                  onChange={(e) => handleInputChange("username", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("username", e.target.value)
+                  }
                   error={formErrors.username}
                 />
 
@@ -173,7 +231,9 @@ const ProfileEditForm = () => {
                   type="password"
                   placeholder="Enter new password (optional)"
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                   error={formErrors.password}
                 />
 
@@ -182,7 +242,9 @@ const ProfileEditForm = () => {
                   icon={User}
                   placeholder="Enter display name (optional)"
                   value={formData.displayName}
-                  onChange={(e) => handleInputChange("displayName", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("displayName", e.target.value)
+                  }
                   error={formErrors.displayName}
                 />
 
@@ -201,7 +263,9 @@ const ProfileEditForm = () => {
                   icon={Building}
                   placeholder="Enter college name (optional)"
                   value={formData.collegeName}
-                  onChange={(e) => handleInputChange("collegeName", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("collegeName", e.target.value)
+                  }
                   error={formErrors.collegeName}
                 />
 
@@ -210,7 +274,9 @@ const ProfileEditForm = () => {
                   icon={Github}
                   placeholder="Enter GitHub username (optional)"
                   value={formData.githubUsername}
-                  onChange={(e) => handleInputChange("githubUsername", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("githubUsername", e.target.value)
+                  }
                 />
 
                 <Input
@@ -218,7 +284,9 @@ const ProfileEditForm = () => {
                   icon={Code}
                   placeholder="Enter LeetCode username (optional)"
                   value={formData.leetcodeUsername}
-                  onChange={(e) => handleInputChange("leetcodeUsername", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("leetcodeUsername", e.target.value)
+                  }
                 />
 
                 <Input
@@ -226,7 +294,9 @@ const ProfileEditForm = () => {
                   icon={FileCode}
                   placeholder="Enter CodeChef username (optional)"
                   value={formData.codechefUsername}
-                  onChange={(e) => handleInputChange("codechefUsername", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("codechefUsername", e.target.value)
+                  }
                 />
 
                 <Input
@@ -234,7 +304,9 @@ const ProfileEditForm = () => {
                   icon={Linkedin}
                   placeholder="Enter LinkedIn profile URL (optional)"
                   value={formData.linkedinurl}
-                  onChange={(e) => handleInputChange("linkedinurl", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("linkedinurl", e.target.value)
+                  }
                   error={formErrors.linkedinurl}
                 />
 
@@ -243,7 +315,9 @@ const ProfileEditForm = () => {
                   icon={Twitter}
                   placeholder="Enter X username (optional)"
                   value={formData.twitterusername}
-                  onChange={(e) => handleInputChange("twitterusername", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("twitterusername", e.target.value)
+                  }
                 />
 
                 <Input
@@ -251,7 +325,9 @@ const ProfileEditForm = () => {
                   icon={Instagram}
                   placeholder="Enter Instagram username (optional)"
                   value={formData.instagramusername}
-                  onChange={(e) => handleInputChange("instagramusername", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("instagramusername", e.target.value)
+                  }
                 />
 
                 <Input
@@ -259,7 +335,9 @@ const ProfileEditForm = () => {
                   icon={FileCode}
                   placeholder="Enter resume URL (optional)"
                   value={formData.resumeUrl}
-                  onChange={(e) => handleInputChange("resumeUrl", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("resumeUrl", e.target.value)
+                  }
                   error={formErrors.resumeUrl}
                 />
 
@@ -268,8 +346,39 @@ const ProfileEditForm = () => {
                   icon={Code}
                   placeholder="Enter portfolio URL (optional)"
                   value={formData.portfolioUrl}
-                  onChange={(e) => handleInputChange("portfolioUrl", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("portfolioUrl", e.target.value)
+                  }
                   error={formErrors.portfolioUrl}
+                />
+
+                <Input
+                  label="GIF URL"
+                  icon={Film}
+                  placeholder="Enter GIF URL (optional)"
+                  value={formData.gifUrl}
+                  onChange={(e) => handleInputChange("gifUrl", e.target.value)}
+                  error={formErrors.gifUrl}
+                />
+
+                <Input
+                  label="Cover Picture URL"
+                  icon={Image}
+                  placeholder="Enter Cover Picture URL (optional)"
+                  value={formData.coverPhotoUrl}
+                  onChange={(e) =>
+                    handleInputChange("coverPhotoUrl", e.target.value)
+                  }
+                  error={formErrors.coverPhotoUrl}
+                />
+
+                <Input
+                  label="Emoji"
+                  icon={Sticker}
+                  placeholder="Enter Emoji (optional)"
+                  value={formData.emoji}
+                  onChange={(e) => handleInputChange("emoji", e.target.value)}
+                  error={formErrors.emoji}
                 />
               </div>
 

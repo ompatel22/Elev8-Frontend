@@ -12,6 +12,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { SiLeetcode, SiCodechef } from "react-icons/si";
 import ProfileCard from "../profile/ProfileCard";
 import { FaGlobe, FaFileAlt, FaAward, FaCertificate } from "react-icons/fa";
+import { use } from "react";
 
 const platformConfig = [
   {
@@ -73,25 +74,6 @@ const platformConfig = [
 ];
 
 const ProfileDashboard = () => {
-  // New achievements data
-  // const achievements = [
-  //   {
-  //     title: "Competitive Programming",
-  //     description: "Achieved 5⭐ on CodeChef",
-  //     icon: FaAward,
-  //   },
-  //   {
-  //     title: "Open Source",
-  //     description: "100+ GitHub Contributions",
-  //     icon: FaGithub,
-  //   },
-  //   {
-  //     title: "LeetCode",
-  //     description: "Solved 500+ Problems",
-  //     icon: SiLeetcode,
-  //   },
-  // ];
-
   // New certifications data
   const certifications = [
     {
@@ -135,8 +117,6 @@ const ProfileDashboard = () => {
         setUserData(response.data);
         setUserData({
           ...response.data,
-          resumeUrl: "https://pdf.ac/2myAip",
-          portfolioUrl: "https://www.linkedin.com/in/om-patel-22122004u/",
         });
         setSuccess(true);
       })
@@ -227,36 +207,15 @@ const ProfileDashboard = () => {
                 countryFlagUrl={codechefData.countryFlag}
                 name={userData.displayName}
                 username={username}
+                githubUsername={userData.githubUsername}
                 bio={userData.bio}
+                emoji={userData.emoji}
                 coverImageUrl={
-                  "https://images.unsplash.com/photo-1504805572947-34fad45aed93?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFjZWJvb2slMjBjb3ZlcnxlbnwwfHwwfHx8MA%3D%3D"
+                  userData.coverPhotoUrl
+                    ? userData.coverPhotoUrl
+                    : "https://images.unsplash.com/photo-1504805572947-34fad45aed93?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFjZWJvb2slMjBjb3ZlcnxlbnwwfHwwfHx8MA%3D%3D"
                 }
               />
-              {/* 
-              <div className="bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition duration-300 backdrop-blur-md border border-gray-700 ml-10 mb-10">
-                <div className="flex items-center gap-2 mb-4 ml-10">
-                  <FaTrophy className="text-yellow-400 text-xl" />
-                  <h3 className="text-lg font-semibold">Achievements</h3>
-                </div>
-                <div className="grid grid-cols-1 gap-3">
-                  {achievements.map((achievement, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-4 p-3 bg-black/30 rounded-lg backdrop-blur-sm hover:bg-black/40 transition-all duration-300"
-                    >
-                      <achievement.icon
-                        className={`text-2xl ${achievement.color}`}
-                      />
-                      <div>
-                        <h4 className="font-medium">{achievement.title}</h4>
-                        <p className="text-sm text-gray-400">
-                          {achievement.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
 
               {/* Add Certifications Section before Stats Overview */}
               <div className="bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition duration-300 backdrop-blur-md border border-gray-700 ml-10 mb-6">
@@ -352,6 +311,7 @@ const ProfileDashboard = () => {
               imgUrl={`https://leetcard.jacoblin.cool/${userData.leetcodeUsername}?theme=dark&font=inter&ext=heatmap`}
             />
           )}
+
           {!codechefData ? (
             <>
               <CardShimmer />
@@ -375,15 +335,53 @@ const ProfileDashboard = () => {
                 ]}
                 imgUrl="x"
               />
+            </>
+          )}
+
+          {!userData ? (
+            <>
+              <CardShimmer />
+            </>
+          ) : (
+            <>
               {/* Added GIF after CodeChef cards */}
               <div className="bg-gray-900 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 backdrop-blur-md border border-gray-700">
                 <img
-                  src="https://media.tenor.com/YZPnGuPeZv8AAAAd/coding.gif"
+                  src={
+                    userData.gifUrl
+                      ? userData.gifUrl
+                      : "https://media.tenor.com/YZPnGuPeZv8AAAAd/coding.gif"
+                  }
                   alt="Coding animation"
                   className="w-full h-auto rounded-lg"
                 />
               </div>
             </>
+          )}
+
+          {/* Random Quoat */}
+          <div className="bg-gray-900 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 backdrop-blur-md border border-gray-700">
+            <h3 className="text-2xl font-bold text-blue-400 mb-4">
+              ✍🏻 Random Dev Quote
+            </h3>
+            <img
+              src={
+                "https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight"
+              }
+              alt="quote"
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
+
+          {!githubData ? (
+            <CardShimmer />
+          ) : (
+            <div className="bg-gray-900 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300 backdrop-blur-md border border-gray-700">
+              <img
+                src={`https://github-readme-activity-graph.vercel.app/graph?username=${userData.githubUsername}&theme=tokyo-night`}
+                alt="GitHub Activity Graph"
+              />
+            </div>
           )}
         </div>
       </div>
