@@ -1,21 +1,26 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import GradientBackground from "../background/GradientBackground" 
+import GradientBackground from "../background/GradientBackground"
 
 function CreateStudyGroup() {
   const [studyGroupName, setStudyGroupName] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
   const [user, setUser] = useState("");
+  const[currentName,setCurrentname] = useState("")
 
   useEffect(() => {
     // Get the username from localStorage
     const username = localStorage.getItem("username");
+    const userId = localStorage.getItem("userId");
     if (!username) {
       navigate("/login");
     }
-    setUser(username);
+    console.log(userId);
+
+    setUser(userId);
+    setCurrentname(username);
   }, [navigate]);
 
   const handleSubmit = async (e) => {
@@ -29,7 +34,7 @@ function CreateStudyGroup() {
     try {
       // Fetch user details from backend
       const userResponse = await axios.get(
-        `http://localhost:8080/api/users/${user}`
+        `http://localhost:8080/api/users/${currentName}`
       );
 
       if (!userResponse.data) {
@@ -42,7 +47,7 @@ function CreateStudyGroup() {
       const studyGroupData = {
         studyGroupName,
         studyGroupDescription: description,
-        owner: userResponse.data, // Sending full user object
+        ownerId: user,
       };
 
       // Send the POST request

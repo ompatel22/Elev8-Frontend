@@ -3,11 +3,13 @@ import axios from "axios";
 function JoinStudyGroup({ studyGroupName }) {
     const handleJoin = async () => {
         const username = localStorage.getItem("username");
+        const userId = localStorage.getItem("userId");
         if (!username) {
             console.error("Username not found in localStorage.");
             return;
         }
-        console.log("Attempting to join as:", username);
+
+        console.log("Attempting to join as:", userId);
 
         try {
             // Fetch the user
@@ -17,7 +19,7 @@ function JoinStudyGroup({ studyGroupName }) {
 
             // Check if user is already in the study group
             try {
-                await axios.get(`http://localhost:8080/api/v1/study_group/${studyGroupName}/user/${username}`);
+                await axios.get(`http://localhost:8080/api/v1/study_group/${studyGroupName}/user/${userId}`);
                 console.log("User is already in the study group.");
                 alert("You are already in this study group!");
             } catch (error) {
@@ -27,8 +29,14 @@ function JoinStudyGroup({ studyGroupName }) {
                     try {
                         const response = await axios.post(
                             `http://localhost:8080/api/v1/study_group/${studyGroupName}/join_study_group`,
-                            user  // Send user directly
+                            { userId },  // Wrap in an object
+                            {
+                                headers: {
+                                    "Content-Type": "application/json", // Ensure correct content type
+                                },
+                            }
                         );
+
 
                         if (response.status === 200) {
                             window.location.reload();

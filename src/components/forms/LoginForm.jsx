@@ -58,9 +58,11 @@ const LoginForm = () => {
         // Check if the backend response contains a message
         throw new Error("Invalid username or password");
       }
+      console.log(data);
 
       setSuccess(true);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("userId", data.id);
       httpClient.defaults.headers.common['username'] = data.username;
       localStorage.setItem("college", data.collegeName);
       setCurrentUser(data.username);
