@@ -5,6 +5,7 @@ import HackathonList from "../components/hackathon/HackathonList";
 import GradientBackground from "../components/background/GradientBackground";
 import Navigation from "../components/navigation/Navigation";
 import { useState, useEffect } from "react";
+import VerticalNavBar from "../components/navigation/VerticalNavBar";
 
 const HackathonPage = () => {
   const navigate = useNavigate();
@@ -29,11 +30,16 @@ const HackathonPage = () => {
           hackathons={hackathons}
           setFilteredHackathons={setFilteredHackathons}
         />
-        <HackathonList
+        <VerticalNavBar
           setHackathons={setHackathons}
           filteredHackathons={filteredHackathons}
           setFilteredHackathons={setFilteredHackathons}
         />
+        {/* <HackathonList
+          setHackathons={setHackathons}
+          filteredHackathons={filteredHackathons}
+          setFilteredHackathons={setFilteredHackathons}
+        /> */}
       </div>
     </GradientBackground>
   );
