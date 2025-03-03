@@ -142,7 +142,7 @@ const ChatPage = () => {
               <div className="flex flex-row gap-2">
                 <Link to={`/dashboard/profile/${message.sender}`}>
                   <img
-                    className="h-10 w-10"
+                    className="h-10 w-10 rounded-full"
                     src={`https://github.com/${message.sender}.png`}
                     alt=""
                   />

@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navigation/NavBar";
-import HackathonList from "../components/hackathon/HackathonList";
 import GradientBackground from "../components/background/GradientBackground";
 import Navigation from "../components/navigation/Navigation";
 import { useState, useEffect } from "react";
@@ -35,11 +34,6 @@ const HackathonPage = () => {
           filteredHackathons={filteredHackathons}
           setFilteredHackathons={setFilteredHackathons}
         />
-        {/* <HackathonList
-          setHackathons={setHackathons}
-          filteredHackathons={filteredHackathons}
-          setFilteredHackathons={setFilteredHackathons}
-        /> */}
       </div>
     </GradientBackground>
   );
