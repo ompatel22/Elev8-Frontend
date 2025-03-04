@@ -27,8 +27,9 @@ const HackathonDetailsPage = () => {
   const [error, setError] = useState(null);
   const [requestObject, setRequestObject] = useState({});
   const [text, setText] = useState("");
-  const [disabled, setDisabled] = useState(true);
+  const [visible, setVisible] = useState(true);
   const username = localStorage.getItem("username");
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const fetchHackathonData = async () => {
@@ -45,12 +46,12 @@ const HackathonDetailsPage = () => {
           status: "pending",
         });
         setLoading(false);
+        setSuccess(true);
       } catch (err) {
         setError(err.message);
         setLoading(false);
       }
     };
-
     fetchHackathonData();
   }, [id, username]);
 
@@ -58,13 +59,21 @@ const HackathonDetailsPage = () => {
     if (text === "send") {
       handleJoin();
     }
-  }, [text]);
+    if (success===true) {
+      if (new Date(hackathonData.registrationDates.end) < new Date() || new Date(hackathonData.registrationDates.start) > new Date()) {
+        setVisible(false);
+      }
+    }
+    if(success===true && hackathonData.requestsToJoin.includes(username)){
+      setVisible(false);
+    }
+    if (requestObject.createdBy === username) {
+      setVisible(false);
+    }
+  }, [text, success]);
 
   const handleJoin = async () => {
     try {
-      if (requestObject.createdBy === username) {
-        throw new Error("You cannot request to join your own hackathon.");
-      }
       await axios.post("http://localhost:8080/request", requestObject, {
         headers: { "Content-Type": "application/json" },
       });
@@ -198,11 +207,11 @@ const HackathonDetailsPage = () => {
               </div>
             </div>
 
-            {disabled && (
+            {visible && (
               <button
                 onClick={() => {
                   setText("send");
-                  setDisabled(false);
+                  setVisible(false);
                 }}
                 className="px-6 py-3 bg-blue-500 text-white rounded mt-24 w-full hover:bg-blue-600 transition-colors"
               >

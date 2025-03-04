@@ -10,8 +10,12 @@ const Navbar = ({ hackathons, setFilteredHackathons }) => {
   const debouncedSearch = useCallback(
     debounce((titleQuery, cityQuery) => {
       const filtered = hackathons.filter((hackathon) => {
-        const matchesTitle = hackathon.title.toLowerCase().includes(titleQuery.toLowerCase());
-        const matchesCity = hackathon.location.toLowerCase().includes(cityQuery.toLowerCase());
+        const matchesTitle = hackathon.title
+          .toLowerCase()
+          .includes(titleQuery.toLowerCase());
+        const matchesCity = hackathon.location
+          .toLowerCase()
+          .includes(cityQuery.toLowerCase());
         return matchesTitle && matchesCity;
       });
 
@@ -69,12 +73,12 @@ const Navbar = ({ hackathons, setFilteredHackathons }) => {
         </Link>
         <Link to="/dashboard/hackathons/requests">
           <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Received Requests
+            Requests Received
           </button>
         </Link>
         <Link to="/dashboard/hackathons/requests/status">
           <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Requests Status
+            Your Requests' Status
           </button>
         </Link>
       </div>
