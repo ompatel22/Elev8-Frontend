@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navigation from "../navigation/Navigation";
@@ -7,19 +7,26 @@ import GradientBackground from "../background/GradientBackground";
 
 const StudyGroupUsers = () => {
     const { groupName } = useParams();
-    const [collegeData, setCollegeData] = useState([]);
+    const [studyGroupData, setStudyGroupData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [currentUserId, setCurrentUserId] = useState("");
+    const [ownerId, setOwnerId] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
+        const userId = localStorage.getItem("userId");
+        setCurrentUserId(userId);
+
         const fetchData = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get(
                     `http://localhost:8080/api/v1/study_group/${groupName}/users`
                 );
-                //console.log("API Response:", response.data);
-                setCollegeData(response.data || []);
+
+                const userList = response.data || [];
+                setStudyGroupData(userList);
+                setOwnerId(userList.length > 0 ? userList[0].id : null);
             } catch (err) {
                 setError("Failed to load data");
             } finally {
@@ -30,12 +37,25 @@ const StudyGroupUsers = () => {
         fetchData();
     }, [groupName]);
 
+    const handleDeleteGroup = async () => {
+        try {
+            if (ownerId === currentUserId) {
+                await axios.delete(`http://localhost:8080/api/v1/study_group/${groupName}/delete/${ownerId}`);
+            }
+            navigate("/dashboard/study-groups");
+        } catch (error) {
+            console.error("Error deleting group:", error);
+            alert("Failed to delete group.");
+        }
+    };
+
     return (
         <GradientBackground>
             <div className="min-h-screen">
                 <Navigation />
+
                 <div className="container mx-auto p-4 pt-28 flex flex-col gap-4 items-center justify-center w-full max-w-7xl">
-                    <div className="text-center space-y-4 mb-12">
+                    <div className="text-center space-y-4 mb-6 w-full">
                         <h2 className="md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 pb-2">
                             <Typewriter
                                 words={[`${groupName} Community`]}
@@ -52,6 +72,18 @@ const StudyGroupUsers = () => {
                         </p>
                     </div>
 
+                    {/* Delete Button - Positioned Below Typewriter and Above Users */}
+                    {ownerId && currentUserId && ownerId === currentUserId && (
+                        <div className="w-full flex justify-end max-w-7xl">
+                            <button
+                                onClick={handleDeleteGroup}
+                                className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                            >
+                                Delete Group
+                            </button>
+                        </div>
+                    )}
+
                     {loading ? (
                         <div className="flex items-center justify-center min-h-[400px]">
                             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-500"></div>
@@ -62,7 +94,7 @@ const StudyGroupUsers = () => {
                         </div>
                     ) : (
                         <div className="w-full space-y-4">
-                            {collegeData.map((user, index) => (
+                            {studyGroupData.map((user, index) => (
                                 <Link
                                     to={`/dashboard/profile/${user.username}`}
                                     key={index}
@@ -82,8 +114,12 @@ const StudyGroupUsers = () => {
                                                 <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h2 className="text-lg font-semibold text-white truncate group-hover:text-teal-400 transition-colors duration-300">
+                                                <h2 className="text-lg font-semibold text-white truncate group-hover:text-teal-400 transition-colors duration-300 flex items-center gap-2">
                                                     {user.username}
+                                                    <span className={`text-xs px-2 py-1 rounded-full ${index === 0 ? "bg-blue-500 text-white" : "bg-gray-600 text-gray-200"
+                                                        }`}>
+                                                        {index === 0 ? "Admin" : "Member"}
+                                                    </span>
                                                 </h2>
                                                 <p className="text-sm text-gray-400 truncate">
                                                     {user.email}
