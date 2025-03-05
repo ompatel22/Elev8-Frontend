@@ -72,7 +72,7 @@ export default function VerticalNavBar({
               setHackathons={setHackathons}
               filteredHackathons={filteredHackathons}
               setFilteredHackathons={setFilteredHackathons}
-              joinable={false}
+              joinable={true}
             />
           </div>
         )}

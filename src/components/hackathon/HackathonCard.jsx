@@ -70,7 +70,6 @@ const HackathonCard = ({
         {/* Join Now Button */}
         {joinable &&
         createdBy !== `${localStorage.getItem("username")}` &&
-        type !== "upcoming" &&
         !requestsToJoin.includes(`${localStorage.getItem("username")}`) ? (
           <div className="mt-6">
             <Link to={`/dashboard/hackathons/${id}`}>
@@ -84,14 +83,6 @@ const HackathonCard = ({
             <Link to={`/dashboard/hackathons/${id}`}>
               <button className="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg transition-all duration-300 transform shadow-lg">
                 Already Requested! ✅
-              </button>
-            </Link>
-          </div>
-        ) : type === "upcoming" && createdBy !== `${localStorage.getItem("username")}`? (
-          <div className="mt-6">
-            <Link to={`/dashboard/hackathons/${id}`}>
-              <button className="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg transition-all duration-300 transform shadow-lg">
-                Upcoming Hackathon 🚀
               </button>
             </Link>
           </div>

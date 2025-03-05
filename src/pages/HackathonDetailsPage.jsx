@@ -60,7 +60,7 @@ const HackathonDetailsPage = () => {
       handleJoin();
     }
     if (success===true) {
-      if (new Date(hackathonData.registrationDates.end) < new Date() || new Date(hackathonData.registrationDates.start) > new Date()) {
+      if (new Date(hackathonData.registrationDates.end) < new Date()) {
         setVisible(false);
       }
     }
