@@ -13,6 +13,7 @@ const StudyGroupUsers = () => {
     const [currentUserId, setCurrentUserId] = useState("");
     const [ownerId, setOwnerId] = useState(null);
     const navigate = useNavigate();
+
     useEffect(() => {
         const userId = localStorage.getItem("userId");
         setCurrentUserId(userId);
@@ -45,7 +46,15 @@ const StudyGroupUsers = () => {
             navigate("/dashboard/study-groups");
         } catch (error) {
             console.error("Error deleting group:", error);
-            alert("Failed to delete group.");
+        }
+    };
+
+    const handleRemoveMember = async (userId) => {
+        try {
+            await axios.delete(`http://localhost:8080/api/v1/study_group/${groupName}/remove/${userId}`);
+            setStudyGroupData(prev => prev.filter(user => user.id !== userId));
+        } catch (error) {
+            console.error("Error removing member:", error);
         }
     };
 
@@ -72,7 +81,6 @@ const StudyGroupUsers = () => {
                         </p>
                     </div>
 
-                    {/* Delete Button - Positioned Below Typewriter and Above Users */}
                     {ownerId && currentUserId && ownerId === currentUserId && (
                         <div className="w-full flex justify-end max-w-7xl">
                             <button
@@ -95,39 +103,49 @@ const StudyGroupUsers = () => {
                     ) : (
                         <div className="w-full space-y-4">
                             {studyGroupData.map((user, index) => (
-                                <Link
-                                    to={`/dashboard/profile/${user.username}`}
+                                <div
                                     key={index}
-                                    className="group block"
+                                    className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transform hover:-translate-y-1 flex items-center justify-between"
                                 >
-                                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transform hover:-translate-y-1">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="relative">
-                                                <img
-                                                    src={`https://github.com/${user.githubUsername}.png`}
-                                                    alt={user.username}
-                                                    className="h-16 w-16 rounded-full object-cover ring-2 ring-gray-700 group-hover:ring-blue-500 transition-all duration-300"
-                                                    onError={(e) => {
-                                                        e.target.src = "https://github.com/github.png";
-                                                    }}
-                                                />
-                                                <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h2 className="text-lg font-semibold text-white truncate group-hover:text-teal-400 transition-colors duration-300 flex items-center gap-2">
-                                                    {user.username}
-                                                    <span className={`text-xs px-2 py-1 rounded-full ${index === 0 ? "bg-blue-500 text-white" : "bg-gray-600 text-gray-200"
-                                                        }`}>
-                                                        {index === 0 ? "Admin" : "Member"}
-                                                    </span>
-                                                </h2>
-                                                <p className="text-sm text-gray-400 truncate">
-                                                    {user.email}
-                                                </p>
-                                            </div>
+                                    <Link
+                                        to={`/dashboard/profile/${user.username}`}
+                                        className="group flex items-center space-x-4"
+                                    >
+                                        <div className="relative">
+                                            <img
+                                                src={`https://github.com/${user.githubUsername}.png`}
+                                                alt={user.username}
+                                                className="h-16 w-16 rounded-full object-cover ring-2 ring-gray-700 group-hover:ring-blue-500 transition-all duration-300"
+                                                onError={(e) => {
+                                                    e.target.src = "https://github.com/github.png";
+                                                }}
+                                            />
+                                            <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
                                         </div>
-                                    </div>
-                                </Link>
+                                        <div className="flex-1 min-w-0">
+                                            <h2 className="text-lg font-semibold text-white truncate group-hover:text-teal-400 transition-colors duration-300 flex items-center gap-2">
+                                                {user.username}
+                                                <span
+                                                    className={`text-xs px-2 py-1 rounded-full ${index === 0 ? "bg-blue-500 text-white" : "bg-gray-600 text-gray-200"
+                                                        }`}
+                                                >
+                                                    {index === 0 ? "Admin" : "Member"}
+                                                </span>
+                                            </h2>
+                                            <p className="text-sm text-gray-400 truncate">
+                                                {user.email}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                    {ownerId === currentUserId && user.id !== currentUserId && (
+                                        <button
+                                            onClick={() => handleRemoveMember(user.id)}
+                                            className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition"
+                                        >
+                                            Remove
+                                        </button>
+                                    )}
+                                </div>
                             ))}
                         </div>
                     )}
