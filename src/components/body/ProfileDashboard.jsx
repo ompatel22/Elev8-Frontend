@@ -218,7 +218,7 @@ const ProfileDashboard = () => {
               />
 
               {/* Add Certifications Section before Stats Overview */}
-              <div className="bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition duration-300 backdrop-blur-md border border-gray-700 ml-10 mb-6">
+              {/* <div className="bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition duration-300 backdrop-blur-md border border-gray-700 ml-10 mb-6">
                 <div className="flex items-center gap-2 mb-6">
                   <FaCertificate className="text-yellow-400 text-xl" />
                   <h3 className="text-lg font-semibold">
@@ -243,7 +243,7 @@ const ProfileDashboard = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               {/* Social Media Cards Grid */}
               <div className="grid grid-cols-2 gap-y-8 pl-12">

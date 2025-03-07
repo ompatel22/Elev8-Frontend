@@ -20,7 +20,7 @@ export default function VerticalNavBar({
         {["upcoming", "ongoing", "past"].map((tab) => (
           <button
             key={tab}
-            className={`p-3 rounded-lg ${
+            className={`p-3 rounded-lg ${ 
               activeTab === tab ? "bg-gray-700" : "hover:bg-gray-800"
             }`}
             onClick={() => handleTabChange(tab)}
