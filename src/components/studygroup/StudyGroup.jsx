@@ -42,12 +42,10 @@ function StudyGroup() {
         }
     };
 
-    // Initial fetch on mount
     useEffect(() => {
         fetchStudyGroups();
     }, []);
 
-    // Check if user is logged in
     useEffect(() => {
         const username = localStorage.getItem("username");
         if (!username) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MdAttachFile, MdSend } from "react-icons/md";
+import { MdAttachFile, MdSend, MdEmojiEmotions } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SockJS from "sockjs-client/dist/sockjs";
 import { Stomp } from "@stomp/stompjs";
@@ -8,6 +8,7 @@ import { timeAgo } from "../../config/helper";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getMessagesOfAStudyGroup } from "../../services/StudyGroupService";
+import EmojiPicker from "emoji-picker-react";
 
 const StudyGroupChat = ({ studyGroupName }) => {
     const [connected, setConnected] = useState(false);
@@ -15,13 +16,13 @@ const StudyGroupChat = ({ studyGroupName }) => {
     const [groupName, setGroupName] = useState("");
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const chatBoxRef = useRef(null);
     const stompClientRef = useRef(null);
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
 
-    // Set user and group name from props/localStorage
     useEffect(() => {
         const user = localStorage.getItem("username");
         setCurrentUser(user || "");
@@ -29,19 +30,17 @@ const StudyGroupChat = ({ studyGroupName }) => {
         setConnected(!!studyGroupName);
     }, [studyGroupName]);
 
-    // Redirect if no group is selected
     useEffect(() => {
         if (!groupName) {
             navigate("/dashboard/study-groups");
         }
     }, [groupName, navigate]);
 
-    // Load previous messages
     useEffect(() => {
         const loadMessages = async () => {
             try {
                 const fetchedMessages = await getMessagesOfAStudyGroup(groupName);
-                setMessages(fetchedMessages); // ✅ No reverse, store in original order
+                setMessages(fetchedMessages);
             } catch (error) {
                 console.error("Error loading messages:", error);
             }
@@ -52,14 +51,12 @@ const StudyGroupChat = ({ studyGroupName }) => {
         }
     }, [groupName, connected]);
 
-    // Auto-scroll to the latest message
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
 
-    // WebSocket connection setup
     useEffect(() => {
         if (!groupName || stompClientRef.current) return;
 
@@ -72,7 +69,7 @@ const StudyGroupChat = ({ studyGroupName }) => {
 
             client.subscribe(`/api/v1/topic/studyGroup/${studyGroupName}`, (message) => {
                 const newMessage = JSON.parse(message.body);
-                setMessages((prev) => [...prev, newMessage]); // ✅ Append new messages at bottom
+                setMessages((prev) => [...prev, newMessage]);
             });
         });
 
@@ -84,7 +81,6 @@ const StudyGroupChat = ({ studyGroupName }) => {
         };
     }, [groupName]);
 
-    // Send message
     const sendMessage = () => {
         if (stompClientRef.current && connected && input.trim()) {
             const message = {
@@ -104,6 +100,10 @@ const StudyGroupChat = ({ studyGroupName }) => {
         }
     };
 
+    const addEmoji = (emojiObject) => {
+        setInput((prevInput) => prevInput + emojiObject.emoji);
+    };
+
     return (
         <div className="flex flex-col h-full">
             {/* Header */}
@@ -115,7 +115,6 @@ const StudyGroupChat = ({ studyGroupName }) => {
                 </Link>
             </header>
 
-            {/* Chat Messages */}
             <main
                 ref={chatBoxRef}
                 className="flex-1 px-10 py-4 dark:bg-slate-600 overflow-y-auto h-full max-h-[calc(100vh-160px)]"
@@ -146,15 +145,25 @@ const StudyGroupChat = ({ studyGroupName }) => {
                             </div>
                         </div>
                     ))}
-                    {/* Auto-scroll to latest message */}
                     <div ref={messagesEndRef} />
                 </div>
             </main>
 
+            <div className="w-full px-10 py-4 bg-gray-900 relative">
+                {showEmojiPicker && (
+                    <div className="absolute bottom-16 left-10 bg-gray-800 shadow-lg rounded-lg p-2">
+                        <EmojiPicker theme="dark" onEmojiClick={addEmoji} />
+                    </div>
+                )}
 
-            {/* Input Box */}
-            <div className="w-full px-10 py-4 bg-gray-900">
-                <div className="flex items-center gap-4 w-full mx-auto max-w-2xl bg-gray-800 p-3 rounded-full">
+                <div className="flex items-center gap-4 w-full mx-auto max-w-2xl bg-gray-800 p-3 rounded-full relative">
+                    <button
+                        onClick={() => setShowEmojiPicker((prev) => !prev)}
+                        className="dark:bg-yellow-600 h-10 w-10 flex justify-center items-center rounded-full"
+                    >
+                        <MdEmojiEmotions size={24} />
+                    </button>
+
                     <input
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -163,9 +172,11 @@ const StudyGroupChat = ({ studyGroupName }) => {
                         placeholder="Type your message here..."
                         className="w-full bg-transparent text-white px-4 py-2 outline-none"
                     />
+
                     <button className="dark:bg-purple-600 h-10 w-10 flex justify-center items-center rounded-full">
                         <MdAttachFile size={20} />
                     </button>
+
                     <button
                         onClick={sendMessage}
                         className="dark:bg-green-600 h-10 w-10 flex justify-center items-center rounded-full"
