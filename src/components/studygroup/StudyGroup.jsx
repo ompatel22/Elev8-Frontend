@@ -8,6 +8,7 @@ import axios from "axios";
 import { debounce } from "lodash";
 import { FaSearch } from "react-icons/fa";
 import GradientBackground from "../background/GradientBackground";
+import { timeAgo } from "../../config/helper";
 
 function StudyGroup() {
     const [data, setData] = useState([]);
@@ -17,20 +18,36 @@ function StudyGroup() {
     const [flag, setFlag] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
+    // Function to fetch and update study groups
+    const fetchStudyGroups = async () => {
+        try {
+            const response = await getAllStudyGroups();
+            console.log("API Response:", response);
+
+            // Sort groups by latest message timestamp
+            const sortedGroups = response.sort((a, b) => {
+                const latestA = a.messages?.length
+                    ? new Date(a.messages[a.messages.length - 1].timestamp).getTime()
+                    : 0;
+                const latestB = b.messages?.length
+                    ? new Date(b.messages[b.messages.length - 1].timestamp).getTime()
+                    : 0;
+                return latestB - latestA; // Most recent first
+            });
+
+            setData(sortedGroups);
+            setFilteredData(sortedGroups);
+        } catch (error) {
+            console.error("Error fetching study groups:", error);
+        }
+    };
+
+    // Initial fetch on mount
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getAllStudyGroups();
-                console.log("API Response:", response);
-                setData(response);
-                setFilteredData(response);
-            } catch (error) {
-                console.error("Error fetching study groups:", error);
-            }
-        };
-        fetchData();
+        fetchStudyGroups();
     }, []);
 
+    // Check if user is logged in
     useEffect(() => {
         const username = localStorage.getItem("username");
         if (!username) {
@@ -38,6 +55,7 @@ function StudyGroup() {
         }
     }, [navigate]);
 
+    // Handle selecting a study group
     const handleClick = async (studyGroupName) => {
         setGroupName(studyGroupName);
         setFlag(null);
@@ -51,13 +69,9 @@ function StudyGroup() {
             const response = await axios.get(
                 `http://localhost:8080/api/v1/study_group/${studyGroupName}/user/${userId}`
             );
-            if (response.status === 200 && response.data) {
-                setFlag(true);
-            } else {
-                setFlag(false);
-            }
+            setFlag(response.status === 200 && response.data ? true : false);
         } catch (error) {
-            if (error.response && error.response.status === 400) {
+            if (error.response?.status === 400) {
                 console.warn(`User not found in ${studyGroupName}. Prompting to join.`);
                 setFlag(false);
             } else {
@@ -66,9 +80,10 @@ function StudyGroup() {
         }
     };
 
+    // Debounced search to filter study groups
     const debouncedSearch = useCallback(
         debounce((query) => {
-            const filtered = data.filter(group =>
+            const filtered = data.filter((group) =>
                 group.studyGroupName.toLowerCase().includes(query.toLowerCase())
             );
             setFilteredData(filtered);
@@ -76,6 +91,7 @@ function StudyGroup() {
         [data]
     );
 
+    // Handle search input change
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
         debouncedSearch(event.target.value);
@@ -89,6 +105,7 @@ function StudyGroup() {
                 </div>
 
                 <div className="flex flex-1 pt-20">
+                    {/* Sidebar */}
                     <div className="w-1/4 p-4 border-r bg-gray-900 border-gray-700 h-[calc(100vh-4rem)] overflow-y-auto">
                         <div className="flex items-center space-x-2 mb-4">
                             <div className="relative flex-1">
@@ -108,6 +125,7 @@ function StudyGroup() {
                             </Link>
                         </div>
 
+                        {/* Study Groups List */}
                         <div className="space-y-3">
                             {filteredData.length > 0 ? (
                                 filteredData.map((group) => (
@@ -117,17 +135,27 @@ function StudyGroup() {
                                         onClick={() => handleClick(group.studyGroupName)}
                                     >
                                         <img
-                                            src={group.imageUrl ? group.imageUrl : "https://t3.ftcdn.net/jpg/03/56/73/14/360_F_356731435_KWwMysbXYKSHjQAIkja9PlvJBzd0Y4Xi.jpg"}
+                                            src={group.imageUrl || "https://t3.ftcdn.net/jpg/03/56/73/14/360_F_356731435_KWwMysbXYKSHjQAIkja9PlvJBzd0Y4Xi.jpg"}
                                             alt="Group Icon"
                                             className="w-12 h-12 rounded-full object-cover mr-3"
                                         />
                                         <div>
                                             <h3 className="text-md font-bold text-gray-200">{group.studyGroupName}</h3>
-                                            <p className="text-sm text-gray-400">
-                                                {group.messages?.length > 0
-                                                    ? group.messages[group.messages.length - 1].content
-                                                    : "No messages yet"}
-                                            </p>
+                                            <div className="text-sm text-gray-400">
+                                                {group.messages?.length > 0 ? (
+                                                    <>
+                                                        <span className="font-semibold text-white">
+                                                            {group.messages[group.messages.length - 1]?.sender || "Unknown Sender"}:
+                                                        </span>{" "}
+                                                        {group.messages[group.messages.length - 1]?.content || "No content"} •{" "}
+                                                        <span className="text-gray-500">
+                                                            {timeAgo(group.messages[group.messages.length - 1]?.timestamp)}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    "No messages yet"
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 ))
@@ -137,6 +165,7 @@ function StudyGroup() {
                         </div>
                     </div>
 
+                    {/* Main Chat Section */}
                     <div className="w-3/4 flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
                         {flag === null ? (
                             <div className="flex flex-col items-center justify-center h-full text-gray-500">
