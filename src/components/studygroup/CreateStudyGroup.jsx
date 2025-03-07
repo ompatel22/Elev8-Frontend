@@ -1,48 +1,68 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import GradientBackground from "../background/GradientBackground"
+import GradientBackground from "../background/GradientBackground";
 
 function CreateStudyGroup() {
   const [studyGroupName, setStudyGroupName] = useState("");
   const [description, setDescription] = useState("");
-  const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState("");
-  const[currentName,setCurrentname] = useState("")
+  const [currentName, setCurrentname] = useState("");
+  const navigate = useNavigate();
+  const fileInputRef = React.createRef();
 
   useEffect(() => {
-    // Get the username from localStorage
     const username = localStorage.getItem("username");
     const userId = localStorage.getItem("userId");
     if (!username) {
       navigate("/login");
     }
-    console.log(userId);
-
     setUser(userId);
     setCurrentname(username);
   }, [navigate]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 1024 * 1024) {
+        alert("File size must be less than 1MB");
+        return;
+      }
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!studyGroupName.trim()) {
       alert("Study group name is required!");
       return;
     }
 
+    setLoading(true);
+
     try {
-      // Fetch user details from backend
       const userResponse = await axios.get(
         `http://localhost:8080/api/users/${currentName}`
       );
 
       if (!userResponse.data) {
         alert("User not found!");
+        setLoading(false);
         return;
       }
-
-      console.log(userResponse.data);
 
       const studyGroupData = {
         studyGroupName,
@@ -50,10 +70,17 @@ function CreateStudyGroup() {
         ownerId: user,
       };
 
-      // Send the POST request
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(studyGroupData));
+
+      if (image) {
+        formData.append("icon", image);
+      }
+
       const response = await axios.post(
         "http://localhost:8080/api/v1/study_group/create_study_group",
-        studyGroupData
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (response.status === 200) {
@@ -61,7 +88,8 @@ function CreateStudyGroup() {
       }
     } catch (error) {
       console.error("Error creating study group:", error);
-      navigate(`/dashboard/study-group/create-study-group`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,7 +102,6 @@ function CreateStudyGroup() {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Study Group Name */}
             <div>
               <label className="block text-gray-300 mb-1">
                 Study Group Name *
@@ -89,7 +116,6 @@ function CreateStudyGroup() {
               />
             </div>
 
-            {/* Description (Optional) */}
             <div>
               <label className="block text-gray-300 mb-1">Description</label>
               <textarea
@@ -101,12 +127,44 @@ function CreateStudyGroup() {
               ></textarea>
             </div>
 
-            {/* Submit Button */}
+            <div className="text-center">
+              <label className="block text-gray-300 mb-1">
+                Study Group Icon (Max 1MB)
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {imagePreview && (
+                <div className="mt-3 flex flex-col items-center">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-20 w-20 rounded-full object-cover mb-2"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="text-red-500 hover:text-red-400 text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
+            </div>
+
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-all"
+              disabled={loading}
+              className={`w-full font-bold py-2 px-4 rounded-lg transition-all ${loading
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-500 text-white"
+                }`}
             >
-              Create Study Group
+              {loading ? "Creating..." : "Create Study Group"}
             </button>
           </form>
         </div>
