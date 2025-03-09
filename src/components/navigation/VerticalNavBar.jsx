@@ -16,11 +16,11 @@ export default function VerticalNavBar({
   return (
     <div className="flex h-screen">
       {/* Sidebar Navigation */}
-      <nav className="w-1/5 bg-gray-900/80 backdrop-blur-lg text-white shadow-lg p-4 flex flex-col space-y-4 rounded-lg mr-8 h-screen">
+      <nav className="w-1/5 bg-gray-900/80 backdrop-blur-lg text-white shadow-lg p-4 flex flex-col space-y-4 rounded-lg mr-8 min-h-screen">
         {["upcoming", "ongoing", "past"].map((tab) => (
           <button
             key={tab}
-            className={`p-3 rounded-lg ${ 
+            className={`p-3 rounded-lg ${
               activeTab === tab ? "bg-gray-700" : "hover:bg-gray-800"
             }`}
             onClick={() => handleTabChange(tab)}

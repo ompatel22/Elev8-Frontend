@@ -142,10 +142,13 @@ const HackathonRegistrationForm = () => {
     if (new Date(formData.registrationDates.end) <= new Date()) {
       errors.RegEndDate = "End date must be in the future";
     }
-    if (new Date(formData.registrationDates.end) <= new Date(formData.registrationDates.start)) {
+    if (
+      new Date(formData.registrationDates.end) <=
+      new Date(formData.registrationDates.start)
+    ) {
       errors.RegEndDate = "End date must be greater than start date";
     }
-  
+
     // Hackathon Dates Validation
     if (!formData.hackathonDates.start)
       errors.HackStartDate = "Start date is required";
@@ -157,17 +160,24 @@ const HackathonRegistrationForm = () => {
     if (new Date(formData.hackathonDates.end) <= new Date()) {
       errors.HackEndDate = "End date must be in the future";
     }
-    if (new Date(formData.hackathonDates.end) <= new Date(formData.hackathonDates.start)) {
+    if (
+      new Date(formData.hackathonDates.end) <=
+      new Date(formData.hackathonDates.start)
+    ) {
       errors.HackEndDate = "End date must be greater than start date";
     }
-  
+
     // 🚀 New Validation: Hackathon dates must be after registration dates
-    if (new Date(formData.hackathonDates.start) <= new Date(formData.registrationDates.end)) {
-      errors.HackStartDate = "Hackathon start date must be after registration end date";
+    if (
+      new Date(formData.hackathonDates.start) <=
+      new Date(formData.registrationDates.end)
+    ) {
+      errors.HackStartDate =
+        "Hackathon start date must be after registration end date";
     }
-  
+
     return errors;
-  };  
+  };
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -461,40 +471,40 @@ const HackathonRegistrationForm = () => {
                   </>
                 ) : (
                   <>
-                      <div className="space-y-2">
-                        <label className="block text-sm font-medium text-gray-200">
-                          Team Size
-                        </label>
-                        <div className="flex space-x-4">
-                          <Input
-                            type="number"
-                            placeholder="Min Team Size"
-                            value={formData.teamSize.min}
-                            onChange={(e) =>
-                              handleInputChange("teamSize", {
-                                ...formData.teamSize,
-                                min: parseInt(e.target.value),
-                              })
-                            }
-                            className="w-24"
-                            min="1"
-                            error={formErrors.teamSizeMin}
-                          />
-                          <Input
-                            type="number"
-                            placeholder="Max Team Size"
-                            value={formData.teamSize.max}
-                            onChange={(e) =>
-                              handleInputChange("teamSize", {
-                                ...formData.teamSize,
-                                max: parseInt(e.target.value),
-                              })
-                            }
-                            className="w-24"
-                            min={formData.teamSize.min}
-                            error={formErrors.teamSizeMax}
-                          />
-                        </div>
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-200">
+                        Team Size
+                      </label>
+                      <div className="flex space-x-4">
+                        <Input
+                          type="number"
+                          placeholder="Min Team Size"
+                          value={formData.teamSize.min}
+                          onChange={(e) =>
+                            handleInputChange("teamSize", {
+                              ...formData.teamSize,
+                              min: parseInt(e.target.value),
+                            })
+                          }
+                          className="w-24"
+                          min="1"
+                          error={formErrors.teamSizeMin}
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Max Team Size"
+                          value={formData.teamSize.max}
+                          onChange={(e) =>
+                            handleInputChange("teamSize", {
+                              ...formData.teamSize,
+                              max: parseInt(e.target.value),
+                            })
+                          }
+                          className="w-24"
+                          min={formData.teamSize.min}
+                          error={formErrors.teamSizeMax}
+                        />
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -552,7 +562,6 @@ const HackathonRegistrationForm = () => {
                         error={formErrors.HackEndDate}
                       />
                     </div>
-
 
                     <div className="flex space-x-4">
                       <button

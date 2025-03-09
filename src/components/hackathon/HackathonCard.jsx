@@ -19,7 +19,53 @@ const HackathonCard = ({
   logo,
   joinable,
   requestsToJoin,
+  mode,
+  currentTeamSize,
+  teamSize,
+  acceptedUsers,
+  rejectedUsers,
 }) => {
+  const username = localStorage.getItem("username");
+  const hasRequested = requestsToJoin.includes(username);
+  const isCreatedByUser = createdBy === username;
+  const isRequestAccepted = acceptedUsers.includes(username);
+  const isRequestRejected = rejectedUsers.includes(username);
+
+  let buttonContent;
+  let buttonStyle =
+    "px-6 py-3 text-white font-bold rounded-lg transition-all duration-300 transform shadow-lg";
+  let linkTo = `/dashboard/hackathons/${id}`;
+
+  if (
+    joinable &&
+    !isCreatedByUser &&
+    !hasRequested &&
+    !isRequestAccepted &&
+    !isRequestRejected &&
+    teamSize.max !== currentTeamSize
+  ) {
+    buttonContent = "Join Now 🚀";
+    buttonStyle += " bg-blue-500 hover:bg-blue-600 hover:scale-105";
+  } else if (hasRequested && !isRequestAccepted && !isRequestRejected) {
+    buttonContent = "Request Pending... ⏱️";
+    buttonStyle += " bg-yellow-500";
+  } else if (!isCreatedByUser && isRequestAccepted) {
+    buttonContent = "Request Accepted! ✅";
+    buttonStyle += " bg-green-500";
+  } else if (!isCreatedByUser && isRequestRejected) {
+    buttonContent = "Request Rejected! ❌";
+    buttonStyle += " bg-red-500";
+  }else if(!isCreatedByUser && teamSize.max === currentTeamSize){
+    buttonContent = "Hackathon Full! 🚫";
+    buttonStyle += " bg-red-500";
+  } else if (isCreatedByUser) {
+    buttonContent = "View Your Post 📝";
+    buttonStyle += " bg-gray-500";
+  } else {
+    buttonContent = "View Details 📝";
+    buttonStyle += " bg-gray-500";
+  }
+
   return (
     <div className="relative bg-gray-900 border border-white/20 shadow-lg p-6 rounded-2xl text-white transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex flex-col md:flex-row items-center overflow-hidden">
       {/* Background Image */}
@@ -37,11 +83,11 @@ const HackathonCard = ({
         <div className="space-y-2 text-sm">
           <p className="flex items-center">
             <FaBuilding className="mr-2 text-blue-400" />{" "}
-            <span className="font-semibold">{organization}</span>
+            <span className="font-semibold">Organization: {organization}</span>
           </p>
           <p className="flex items-center">
             <FaLaptopCode className="mr-2 text-green-400" />{" "}
-            <span className="font-semibold">{theme}</span>
+            <span className="font-semibold">Theme: {theme}</span>
           </p>
           {/* <p className="flex items-center">
             <FaCalendarAlt className="mr-2 text-yellow-400" />
@@ -57,64 +103,52 @@ const HackathonCard = ({
               {new Date(registrationDates.end).toLocaleDateString()}
             </span>
           </p> */}
-          <p className="flex items-center">
+          <p className="flex items-center font-semibold">
             <FaCalendarAlt className="mr-2 text-blue-400" />
             Registration Period:{" "}
-            <span className="ml-1">
+            <span className="ml-1 font-semibold">
               {new Date(registrationDates.start).toLocaleDateString()} -{" "}
               {new Date(registrationDates.end).toLocaleDateString()}
             </span>
           </p>
 
           {hackathonDates && (
-            <p className="flex items-center">
+            <p className="flex items-center font-semibold">
               <FaCalendarAlt className="mr-2 text-blue-400" />
               Hackathon Dates:{" "}
-              <span className="ml-1">
+              <span className="ml-1 font-semibold">
                 {new Date(hackathonDates.start).toLocaleDateString()} -{" "}
                 {new Date(hackathonDates.end).toLocaleDateString()}
               </span>
             </p>
           )}
 
-          <p className="flex items-center">
+          <p className="flex items-center font-semibold">
             <FaMapMarkerAlt className="mr-2 text-purple-400" />{" "}
-            <span className="font-semibold">{location}</span>
+            <span className="font-semibold">
+              {location}, Mode: {mode}
+            </span>
           </p>
+
           <p className="flex items-center">
             <FaUser className="mr-2 text-gray-400" />{" "}
             <span className="font-semibold">{createdBy}</span>
           </p>
+
+          <p className="flex items-center">
+            <FaUser className="mr-2 text-gray-400" />{" "}
+            <span className="font-semibold">
+              Team Size: {currentTeamSize}/{teamSize.max}
+            </span>
+          </p>
         </div>
 
         {/* Join Now Button */}
-        {joinable &&
-        createdBy !== `${localStorage.getItem("username")}` &&
-        !requestsToJoin.includes(`${localStorage.getItem("username")}`) ? (
-          <div className="mt-6">
-            <Link to={`/dashboard/hackathons/${id}`}>
-              <button className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
-                Join Now 🚀
-              </button>
-            </Link>
-          </div>
-        ) : requestsToJoin.includes(`${localStorage.getItem("username")}`) ? (
-          <div className="mt-6">
-            <Link to={`/dashboard/hackathons/${id}`}>
-              <button className="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg transition-all duration-300 transform shadow-lg">
-                Already Requested! ✅
-              </button>
-            </Link>
-          </div>
-        ) : (
-          <div className="mt-6">
-            <Link to={`/dashboard/hackathons/${id}`}>
-              <button className="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg transition-all duration-300 transform shadow-lg">
-                View Details 📝
-              </button>
-            </Link>
-          </div>
-        )}
+        <div className="mt-6">
+          <Link to={linkTo}>
+            <button className={buttonStyle}>{buttonContent}</button>
+          </Link>
+        </div>
       </div>
     </div>
   );

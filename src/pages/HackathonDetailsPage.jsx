@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+
 const HackathonDetailsPage = () => {
   const navigate = useNavigate();
 
@@ -68,6 +69,9 @@ const HackathonDetailsPage = () => {
       setVisible(false);
     }
     if (requestObject.createdBy === username) {
+      setVisible(false);
+    }
+    if (success === true && hackathonData.teamSize.max === hackathonData.currentTeamSize) {
       setVisible(false);
     }
   }, [text, success]);
@@ -138,23 +142,27 @@ const HackathonDetailsPage = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="md:w-1/3 p-8 bg-gray-900 backdrop-blur-lg rounded-2xl text-white space-y-6 shadow-xl border border-white/20 self-start sticky top-8">
+        <div className="md:w-1/3 p-8 bg-gray-900 backdrop-blur-lg rounded-2xl text-white space-y-8 shadow-2xl border border-white/20 self-start sticky top-8">
+          {/* Hackathon Title & Organization */}
           <div>
             <h2 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
               {hackathonData.title}
             </h2>
-            <p className="text-gray-300 mb-4">{hackathonData.organization}</p>
+            <p className="text-gray-300 text-lg">
+              {hackathonData.organization}
+            </p>
           </div>
 
-          <div className="flex items-start space-x-4">
+          {/* Uploaded By Section */}
+          <div className="flex items-center space-x-4">
             <Link to={`/dashboard/profile/${hackathonData.createdBy}`}>
               <img
                 src={`https://github.com/${hackathonData.createdBy}.png`}
-                alt=""
-                className="h-8 w-8 rounded-full mt-1"
+                alt="Uploaded by"
+                className="h-10 w-10 rounded-full border-2 border-white/30 hover:scale-105 transition-transform"
               />
             </Link>
-            <div className="flex-1">
+            <div>
               <p className="font-semibold">Uploaded By</p>
               <p className="text-gray-300 capitalize">
                 {hackathonData.createdBy}
@@ -162,10 +170,11 @@ const HackathonDetailsPage = () => {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-start space-x-4">
-              <Calendar className="text-blue-400 mt-1" size={20} />
-              <div className="flex-1">
+          {/* Dates Section */}
+          <div className="space-y-6">
+            <div className="flex items-center space-x-4">
+              <Calendar className="text-blue-400" size={20} />
+              <div>
                 <p className="font-semibold">Registration Period</p>
                 <p className="text-gray-300">
                   {new Date(
@@ -180,65 +189,101 @@ const HackathonDetailsPage = () => {
             </div>
 
             {hackathonData.hackathonDates && (
-              <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <Calendar className="text-blue-400 mt-1" size={20} />
-                  <div className="flex-1">
-                    <p className="font-semibold">Hackathon Dates</p>
-                    <p className="text-gray-300">
-                      {new Date(
-                        hackathonData.hackathonDates.start
-                      ).toLocaleDateString()}{" "}
-                      -{" "}
-                      {new Date(
-                        hackathonData.hackathonDates.end
-                      ).toLocaleDateString()}
-                    </p>
-                  </div>
+              <div className="flex items-center space-x-4">
+                <Calendar className="text-blue-400" size={20} />
+                <div>
+                  <p className="font-semibold">Hackathon Dates</p>
+                  <p className="text-gray-300">
+                    {new Date(
+                      hackathonData.hackathonDates.start
+                    ).toLocaleDateString()}{" "}
+                    -{" "}
+                    {new Date(
+                      hackathonData.hackathonDates.end
+                    ).toLocaleDateString()}
+                  </p>
                 </div>
               </div>
             )}
+          </div>
 
-            <div className="flex items-start space-x-4">
-              <Users className="text-purple-400 mt-1" size={20} />
-              <div className="flex-1">
+          {/* Team Information */}
+          <div className="space-y-6">
+            <div className="flex items-center space-x-4">
+              <Users className="text-purple-400" size={20} />
+              <div>
                 <p className="font-semibold">Team Composition</p>
                 <p className="text-gray-300">
                   {`${hackathonData.teamSize.min}-${hackathonData.teamSize.max} members`}
                 </p>
               </div>
             </div>
+            <div className="flex items-center space-x-4">
+              <Users className="text-purple-400" size={20} />
+              <div>
+                <p className="font-semibold">Current Team Size</p>
+                <p className="text-gray-300">
+                  {hackathonData.currentTeamSize} members
+                </p>
+              </div>
+            </div>
+          </div>
 
-            <div className="flex items-start space-x-4">
-              <Monitor className="text-green-400 mt-1" size={20} />
-              <div className="flex-1">
+          {/* Mode & Location */}
+          <div className="space-y-6">
+            <div className="flex items-center space-x-4">
+              <Monitor className="text-green-400" size={20} />
+              <div>
                 <p className="font-semibold">Mode</p>
                 <p className="text-gray-300 capitalize">{hackathonData.mode}</p>
               </div>
             </div>
-
-            <div className="flex items-start space-x-4">
-              <Globe className="text-green-400 mt-1 mb-8" size={20} />
-              <div className="flex-1">
+            <div className="flex items-center space-x-4">
+              <Globe className="text-green-400" size={20} />
+              <div>
                 <p className="font-semibold">Location</p>
                 <p className="text-gray-300 capitalize">
                   {hackathonData.location}
                 </p>
               </div>
             </div>
-
-            {visible && (
-              <button
-                onClick={() => {
-                  setText("send");
-                  setVisible(false);
-                }}
-                className="px-6 py-3 bg-blue-500 text-white rounded mt-24 w-full hover:bg-blue-600 transition-colors"
-              >
-                Join Now
-              </button>
-            )}
           </div>
+
+          {/* Team Members */}
+          {hackathonData.acceptedUsers.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2 border-b border-gray-700 pb-2">
+                <Users className="text-purple-400" size={20} />
+                <p className="text-lg font-semibold">Team Members</p>
+              </div>
+              <div className="space-y-3">
+                {hackathonData.acceptedUsers.map((user) => (
+                  <div className="flex items-center space-x-4" key={user}>
+                    <Link to={`/dashboard/profile/${user}`}>
+                      <img
+                        src={`https://github.com/${user}.png`}
+                        alt={`${user}'s profile`}
+                        className="h-10 w-10 rounded-full border-2 border-white/30 hover:scale-105 transition-transform"
+                      />
+                    </Link>
+                    <p className="text-gray-300 capitalize">{user}</p>
+                  </div>
+                ))}
+              </div>  
+            </div>
+          )}
+
+          {visible && (
+            <button
+              onClick={() => {
+                setText("send");
+                setVisible(false);
+              }}
+              className="px-6 py-3 bg-blue-500 text-white rounded mt-24 w-full hover:bg-blue-600 transition-colors"
+            >
+              Join Now
+            </button>
+          )}
         </div>
       </div>
     </GradientBackground>
