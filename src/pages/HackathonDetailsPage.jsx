@@ -59,12 +59,12 @@ const HackathonDetailsPage = () => {
     if (text === "send") {
       handleJoin();
     }
-    if (success===true) {
+    if (success === true) {
       if (new Date(hackathonData.registrationDates.end) < new Date()) {
         setVisible(false);
       }
     }
-    if(success===true && hackathonData.requestsToJoin.includes(username)){
+    if (success === true && hackathonData.requestsToJoin.includes(username)) {
       setVisible(false);
     }
     if (requestObject.createdBy === username) {
@@ -178,6 +178,26 @@ const HackathonDetailsPage = () => {
                 </p>
               </div>
             </div>
+
+            {hackathonData.hackathonDates && (
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4">
+                  <Calendar className="text-blue-400 mt-1" size={20} />
+                  <div className="flex-1">
+                    <p className="font-semibold">Hackathon Dates</p>
+                    <p className="text-gray-300">
+                      {new Date(
+                        hackathonData.hackathonDates.start
+                      ).toLocaleDateString()}{" "}
+                      -{" "}
+                      {new Date(
+                        hackathonData.hackathonDates.end
+                      ).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="flex items-start space-x-4">
               <Users className="text-purple-400 mt-1" size={20} />

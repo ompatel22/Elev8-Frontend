@@ -24,7 +24,7 @@ const HackathonPage = () => {
   return (
     <GradientBackground className="min-h-screen">
       <Navigation />
-      <div className="container mx-auto p-4 pt-24 pb-24">
+      <div className="container mx-auto p-4 pt-24 pb-24 overflow-auto h-screen">
         <Navbar
           hackathons={hackathons}
           setFilteredHackathons={setFilteredHackathons}

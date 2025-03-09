@@ -13,12 +13,12 @@ const HackathonCard = ({
   organization,
   theme,
   registrationDates,
+  hackathonDates,
   createdBy,
   location,
   logo,
   joinable,
   requestsToJoin,
-  type,
 }) => {
   return (
     <div className="relative bg-gray-900 border border-white/20 shadow-lg p-6 rounded-2xl text-white transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl flex flex-col md:flex-row items-center overflow-hidden">
@@ -43,7 +43,7 @@ const HackathonCard = ({
             <FaLaptopCode className="mr-2 text-green-400" />{" "}
             <span className="font-semibold">{theme}</span>
           </p>
-          <p className="flex items-center">
+          {/* <p className="flex items-center">
             <FaCalendarAlt className="mr-2 text-yellow-400" />
             Registration Starts:{" "}
             <span className="ml-1">
@@ -56,7 +56,27 @@ const HackathonCard = ({
             <span className="ml-1">
               {new Date(registrationDates.end).toLocaleDateString()}
             </span>
+          </p> */}
+          <p className="flex items-center">
+            <FaCalendarAlt className="mr-2 text-blue-400" />
+            Registration Period:{" "}
+            <span className="ml-1">
+              {new Date(registrationDates.start).toLocaleDateString()} -{" "}
+              {new Date(registrationDates.end).toLocaleDateString()}
+            </span>
           </p>
+
+          {hackathonDates && (
+            <p className="flex items-center">
+              <FaCalendarAlt className="mr-2 text-blue-400" />
+              Hackathon Dates:{" "}
+              <span className="ml-1">
+                {new Date(hackathonDates.start).toLocaleDateString()} -{" "}
+                {new Date(hackathonDates.end).toLocaleDateString()}
+              </span>
+            </p>
+          )}
+
           <p className="flex items-center">
             <FaMapMarkerAlt className="mr-2 text-purple-400" />{" "}
             <span className="font-semibold">{location}</span>

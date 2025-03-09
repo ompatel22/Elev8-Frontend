@@ -107,6 +107,10 @@ const HackathonRegistrationForm = () => {
       start: "",
       end: "",
     },
+    hackathonDates: {
+      start: "",
+      end: "",
+    },
     createdBy: localStorage.getItem("username"),
   });
 
@@ -123,19 +127,47 @@ const HackathonRegistrationForm = () => {
 
   const validateStep2 = () => {
     const errors = {};
+    // Registration Dates Validation
     if (!formData.registrationDates.start)
-      errors.startDate = "Start date is required";
+      errors.RegStartDate = "Start date is required";
     if (!formData.registrationDates.end)
-      errors.endDate = "End date is required";
-    if (formData.participationType === "team") {
-      if (formData.teamSize.min < 1)
-        errors.teamSizeMin = "Minimum team size must be at least 1";
-      if (formData.teamSize.max < formData.teamSize.min) {
-        errors.teamSizeMax = "Maximum team size must be greater than minimum";
-      }
+      errors.RegEndDate = "End date is required";
+    if (!formData.registrationDates.start)
+      errors.HackStartDate = "Start date is required";
+    if (!formData.registrationDates.end)
+      errors.HackEndDate = "End date is required";
+    if (new Date(formData.registrationDates.start) <= new Date()) {
+      errors.RegStartDate = "Start date must be in the future";
     }
+    if (new Date(formData.registrationDates.end) <= new Date()) {
+      errors.RegEndDate = "End date must be in the future";
+    }
+    if (new Date(formData.registrationDates.end) <= new Date(formData.registrationDates.start)) {
+      errors.RegEndDate = "End date must be greater than start date";
+    }
+  
+    // Hackathon Dates Validation
+    if (!formData.hackathonDates.start)
+      errors.HackStartDate = "Start date is required";
+    if (!formData.hackathonDates.end)
+      errors.HackEndDate = "End date is required";
+    if (new Date(formData.hackathonDates.start) <= new Date()) {
+      errors.HackStartDate = "Start date must be in the future";
+    }
+    if (new Date(formData.hackathonDates.end) <= new Date()) {
+      errors.HackEndDate = "End date must be in the future";
+    }
+    if (new Date(formData.hackathonDates.end) <= new Date(formData.hackathonDates.start)) {
+      errors.HackEndDate = "End date must be greater than start date";
+    }
+  
+    // 🚀 New Validation: Hackathon dates must be after registration dates
+    if (new Date(formData.hackathonDates.start) <= new Date(formData.registrationDates.end)) {
+      errors.HackStartDate = "Hackathon start date must be after registration end date";
+    }
+  
     return errors;
-  };
+  };  
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -185,6 +217,10 @@ const HackathonRegistrationForm = () => {
         registrationDates: {
           start: formData.registrationDates.start.replace("T", " ") + ":00",
           end: formData.registrationDates.end.replace("T", " ") + ":00",
+        },
+        hackathonDates: {
+          start: formData.hackathonDates.start.replace("T", " ") + ":00",
+          end: formData.hackathonDates.end.replace("T", " ") + ":00",
         },
       };
 
@@ -472,7 +508,7 @@ const HackathonRegistrationForm = () => {
                             start: e.target.value,
                           })
                         }
-                        error={formErrors.startDate}
+                        error={formErrors.RegStartDate}
                       />
 
                       <Input
@@ -485,9 +521,38 @@ const HackathonRegistrationForm = () => {
                             end: e.target.value,
                           })
                         }
-                        error={formErrors.endDate}
+                        error={formErrors.RegEndDate}
                       />
                     </div>
+
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <Input
+                        label="Hackathon Start Date"
+                        type="datetime-local"
+                        value={formData.hackathonDates.start}
+                        onChange={(e) =>
+                          handleInputChange("hackathonDates", {
+                            ...formData.hackathonDates,
+                            start: e.target.value,
+                          })
+                        }
+                        error={formErrors.HackStartDate}
+                      />
+
+                      <Input
+                        label="Hackathon End Date"
+                        type="datetime-local"
+                        value={formData.hackathonDates.end}
+                        onChange={(e) =>
+                          handleInputChange("hackathonDates", {
+                            ...formData.hackathonDates,
+                            end: e.target.value,
+                          })
+                        }
+                        error={formErrors.HackEndDate}
+                      />
+                    </div>
+
 
                     <div className="flex space-x-4">
                       <button
