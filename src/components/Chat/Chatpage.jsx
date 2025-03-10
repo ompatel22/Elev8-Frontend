@@ -15,10 +15,7 @@ const ChatPage = () => {
   const {
     roomId,
     currentUser,
-    connected,
-    setConnected,
-    setRoomId,
-    setCurrentUser,
+    connected
   } = useChatContext();
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);

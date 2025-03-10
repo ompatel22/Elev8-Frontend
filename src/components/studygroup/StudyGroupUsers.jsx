@@ -20,7 +20,6 @@ const StudyGroupUsers = () => {
     useEffect(() => {
         const userId = localStorage.getItem("userId");
         setCurrentUserId(userId);
-
         const fetchStudyGroupDetails = async () => {
             try {
                 const response = await axios.get(
@@ -75,6 +74,15 @@ const StudyGroupUsers = () => {
         }
     };
 
+    const handlePersonalChat = async (member2Id) => {
+        try {
+            const response = await axios.post(`http://localhost:8080/api/v1/personal_chat/create_or_get_personal_chat/${currentUserId}/${member2Id}`)
+            console.log(response);
+
+        } catch (error) {
+            console.log("Unable to Create or Fetch the Personal Chat.");
+        }
+    }
     return (
         <GradientBackground>
             <div className="min-h-screen">
@@ -168,21 +176,47 @@ const StudyGroupUsers = () => {
                                         </div>
                                     </Link>
 
-                                    {isAdmin && index !== 0 && (
-                                        <button
-                                            onClick={() => handleRemoveMember(user.id)}
-                                            className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition"
-                                        >
-                                            Remove
-                                        </button>
-                                    )}
+                                    <div className="flex space-x-3">
+                                        {user.id !== currentUserId && (
+                                            <button
+                                                onClick={() => handlePersonalChat(user.id)}
+                                                className="bg-teal-600 text-white px-3 py-2 rounded-lg hover:bg-teal-700 transition flex items-center gap-2"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth={2}
+                                                    stroke="currentColor"
+                                                    className="w-5 h-5"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.477 8-10 8a12.442 12.442 0 01-4.963-.96L3 21l1.41-3.76A7.963 7.963 0 012 12C2 7.582 6.477 4 12 4s10 3.582 10 8z"
+                                                    />
+                                                </svg>
+                                                Chat Now
+                                            </button>
+                                        )}
+
+                                        {isAdmin && index !== 0 && (
+                                            <button
+                                                onClick={() => handleRemoveMember(user.id)}
+                                                className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
+
                         </div>
                     )}
                 </div>
             </div>
-        </GradientBackground>
+        </GradientBackground >
     );
 };
 
