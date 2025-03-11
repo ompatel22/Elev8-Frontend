@@ -9,25 +9,52 @@ import { debounce } from "lodash";
 import { FaSearch, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import GradientBackground from "../background/GradientBackground";
 import { timeAgo } from "../../config/helper";
+import PersonalChatChat from "../PersonalChat/PersonalChatChat";
 
 function ChatDropDown() {
     const [openDropdown, setOpenDropdown] = useState(null);
     const [studyGroups, setStudyGroups] = useState([]);
     const [filteredGroups, setFilteredGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState("");
+    const [personalChats, setPersonalChats] = useState([]);
+    const [filteredPersonalChats, setFilteredPersonalChats] = useState([]);
+    const [member2Id, setMember2Id] = useState("");
+    const [member2Name, setMember2Name] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [isMember, setIsMember] = useState(null);
+    const [currentUserId, setCurrentUserId] = useState("");
+    const [personalChatOpen, setPersonalChatOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
+        const userId = localStorage.getItem("userId");
         const username = localStorage.getItem("username");
         if (!username) navigate("/login");
+        setCurrentUserId(userId);
     }, [navigate]);
 
     const toggleDropdown = (dropdown) => {
         setOpenDropdown((prev) => (prev === dropdown ? null : dropdown));
+        setSearchTerm("")
     };
 
+
+    const fetchPersonalChat = async () => {
+        const response = await axios.get(`http://localhost:8080/api/v1/personal_chat/all_personal_chats/${currentUserId}`)
+        console.log(response.data);
+        const sortedPersonalChat = response.data.sort((a, b) => {
+            const latestA = a.messages?.length
+                ? new Date(a.messages[a.messages.length - 1].timestamp).getTime()
+                : 0;
+            const latestB = b.messages?.length
+                ? new Date(b.messages[b.messages.length - 1].timestamp).getTime()
+                : 0;
+            return latestB - latestA;
+        });
+        setFilteredPersonalChats(sortedPersonalChat);
+        setPersonalChats(sortedPersonalChat);
+
+    }
 
     const fetchStudyGroups = async () => {
         try {
@@ -52,6 +79,9 @@ function ChatDropDown() {
         if (openDropdown === "studyGroup") {
             fetchStudyGroups();
         }
+        if (openDropdown === "personalChat") {
+            fetchPersonalChat();
+        }
     }, [openDropdown]);
 
     const handleGroupClick = async (studyGroupName) => {
@@ -74,12 +104,27 @@ function ChatDropDown() {
         }
     };
 
+    const handlePersonalChatClick = (username, id) => {
+        setMember2Id(id);
+        setMember2Name(username);
+    };
+
+    useEffect(() => {
+        if (member2Id && member2Name) {
+            setPersonalChatOpen(true);
+        }
+    }, [member2Id, member2Name]);
+
     const debouncedSearch = useCallback(
         debounce((query) => {
             const filtered = studyGroups.filter((group) =>
                 group.studyGroupName.toLowerCase().includes(query.toLowerCase())
             );
+            const filteredChats = personalChats.filter((chat) =>
+                chat.githubUserName.toLowerCase().includes(query.toLowerCase())
+            );
             setFilteredGroups(filtered);
+            setFilteredPersonalChats(filteredChats);
         }, 300),
         [studyGroups]
     );
@@ -178,8 +223,42 @@ function ChatDropDown() {
                                     {openDropdown === "personalChat" ? <FaChevronUp /> : <FaChevronDown />}
                                 </button>
                                 {openDropdown === "personalChat" && (
-                                    <div className="p-3 bg-gray-700 shadow-lg rounded-lg max-h-[60vh] overflow-y-auto">
-                                        <p className="text-gray-400">Personal chat feature coming soon!</p>
+                                    <div className="space-y-3 max-h-[60vh] overflow-y-auto">
+                                        {filteredPersonalChats.length > 0 ? (
+                                            filteredPersonalChats.map((personalChat) => (
+                                                <div
+                                                    key={personalChat.id}
+                                                    className="p-3 bg-gray-700 shadow-lg rounded-lg flex items-center cursor-pointer hover:bg-gray-600 transition-all"
+                                                    onClick={() => handlePersonalChatClick(personalChat.githubUserName, personalChat.id)}
+                                                >
+                                                    <img
+                                                        src={`https://github.com/${personalChat.githubUserName}.png`}
+                                                        alt={personalChat.githubUserName}
+                                                        className="w-12 h-12 rounded-full object-cover mr-3"
+                                                    />
+                                                    <div>
+                                                        <h3 className="text-md font-bold text-gray-200">{personalChat.githubUserName}</h3>
+                                                        <div className="text-sm text-gray-400">
+                                                            {personalChat.messages?.length > 0 ? (
+                                                                <>
+                                                                    <span className="font-semibold text-white">
+                                                                        {personalChat.messages[personalChat.messages.length - 1]?.sender || "Unknown"}:
+                                                                    </span>{" "}
+                                                                    {personalChat.messages[personalChat.messages.length - 1]?.content || "No content"} •{" "}
+                                                                    <span className="text-gray-500">
+                                                                        {timeAgo(personalChat.messages[personalChat.messages.length - 1]?.timestamp)}
+                                                                    </span>
+                                                                </>
+                                                            ) : (
+                                                                "No messages yet"
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p className="text-gray-400">No Personal Chats found.</p>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -201,13 +280,15 @@ function ChatDropDown() {
                         </div>
                     </div>
 
-                    <div className="w-3/4 flex flex-col h-[calc(100vh-4rem)] overflow-hidden justify-center items-center">
+                    <div className="w-3/4 flex flex-col h-[calc(100vh-4rem)] text-center overflow-hidden justify-center">
                         {openDropdown === null ? (
                             <p className="text-xl text-gray-500">Select any section to chat</p>
                         ) : openDropdown === "studyGroup" && isMember === null ? (
                             <p className="text-lg text-gray-500">Select a study group to continue</p>
-                        ) : openDropdown === "personalChat" ? (
-                            <p className="text-lg text-gray-500">Select a personal chat to continue</p>
+                        ) : openDropdown === "personalChat" && personalChatOpen ? (
+                            <PersonalChatChat memberId={member2Id} memberName={member2Name} />
+                        ) : openDropdown === "personalChat" && !personalChatOpen ? (
+                            <p className="text-lg text-gray-500">Select a Personal chat to continue</p>
                         ) : openDropdown === "hackathonChat" ? (
                             <p className="text-lg text-gray-500">Select a hackathon chat to continue</p>
                         ) : isMember ? (
@@ -216,6 +297,7 @@ function ChatDropDown() {
                             <JoinStudyGroup studyGroupName={selectedGroup} />
                         )}
                     </div>
+
                 </div>
             </div>
         </GradientBackground>
