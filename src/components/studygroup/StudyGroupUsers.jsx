@@ -67,7 +67,7 @@ const StudyGroupUsers = () => {
         if (window.confirm("Are you sure you want to delete this study group?")) {
             try {
                 await axios.delete(`http://localhost:8080/api/v1/study_group/${groupName}/delete/${currentUserId}`);
-                navigate("/dashboard/study-groups");
+                navigate("/dashboard/chat");
             } catch (error) {
                 console.error("Error deleting group:", error);
             }

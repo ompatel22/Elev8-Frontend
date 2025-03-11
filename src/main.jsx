@@ -19,6 +19,7 @@ import ProfileEditForm from "./components/forms/ProfileEditForm.jsx";
 import StudyGroupPage from "./pages/StudyGroupPage.jsx";
 import CreateStudyGroup from "./components/studygroup/CreateStudyGroup.jsx";
 import StudyGroupUsers from "./components/studygroup/StudyGroupUsers.jsx";
+import ChatDropDown from "./components/Chat/ChatDropDown.jsx";
 const appRouter = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/register", element: <RegistrationForm /> },
@@ -35,7 +36,8 @@ const appRouter = createBrowserRouter([
   { path: "/dashboard/profile/:username/edit", element: <ProfileEditForm /> },
   { path: "/dashboard/study-groups", element: <StudyGroupPage /> },
   { path: "/dashboard/study-group/create-study-group", element: <CreateStudyGroup /> },
-  { path: "/dashboard/study-group/:groupName/users", element: <StudyGroupUsers /> }
+  { path: "/dashboard/study-group/:groupName/users", element: <StudyGroupUsers /> },
+  { path: "/dashboard/chat", element: <ChatDropDown /> }
 ]);
 
 createRoot(document.getElementById("root")).render(

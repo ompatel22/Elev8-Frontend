@@ -18,13 +18,11 @@ function StudyGroup() {
     const [flag, setFlag] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Function to fetch and update study groups
     const fetchStudyGroups = async () => {
         try {
             const response = await getAllStudyGroups();
             console.log("API Response:", response);
 
-            // Sort groups by latest message timestamp
             const sortedGroups = response.sort((a, b) => {
                 const latestA = a.messages?.length
                     ? new Date(a.messages[a.messages.length - 1].timestamp).getTime()
@@ -32,7 +30,7 @@ function StudyGroup() {
                 const latestB = b.messages?.length
                     ? new Date(b.messages[b.messages.length - 1].timestamp).getTime()
                     : 0;
-                return latestB - latestA; // Most recent first
+                return latestB - latestA;
             });
 
             setData(sortedGroups);
@@ -53,7 +51,6 @@ function StudyGroup() {
         }
     }, [navigate]);
 
-    // Handle selecting a study group
     const handleClick = async (studyGroupName) => {
         setGroupName(studyGroupName);
         setFlag(null);
@@ -78,7 +75,6 @@ function StudyGroup() {
         }
     };
 
-    // Debounced search to filter study groups
     const debouncedSearch = useCallback(
         debounce((query) => {
             const filtered = data.filter((group) =>
@@ -89,7 +85,6 @@ function StudyGroup() {
         [data]
     );
 
-    // Handle search input change
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
         debouncedSearch(event.target.value);
@@ -103,7 +98,6 @@ function StudyGroup() {
                 </div>
 
                 <div className="flex flex-1 pt-20">
-                    {/* Sidebar */}
                     <div className="w-1/4 p-4 border-r bg-gray-900 border-gray-700 h-[calc(100vh-4rem)] overflow-y-auto">
                         <div className="flex items-center space-x-2 mb-4">
                             <div className="relative flex-1">
@@ -123,7 +117,6 @@ function StudyGroup() {
                             </Link>
                         </div>
 
-                        {/* Study Groups List */}
                         <div className="space-y-3">
                             {filteredData.length > 0 ? (
                                 filteredData.map((group) => (
@@ -163,7 +156,6 @@ function StudyGroup() {
                         </div>
                     </div>
 
-                    {/* Main Chat Section */}
                     <div className="w-3/4 flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
                         {flag === null ? (
                             <div className="flex flex-col items-center justify-center h-full text-gray-500">

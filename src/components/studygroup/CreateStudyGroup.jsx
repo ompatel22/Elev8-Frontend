@@ -84,7 +84,7 @@ function CreateStudyGroup() {
       );
 
       if (response.status === 200) {
-        navigate("/dashboard/study-groups");
+        navigate("/dashboard/chat");
       }
     } catch (error) {
       console.error("Error creating study group:", error);

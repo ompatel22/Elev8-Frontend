@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { FaBars, FaTimes, FaUser, FaSignOutAlt, FaUsers, FaComments, FaCode } from "react-icons/fa";
 import Username from "./Username";
@@ -17,19 +17,53 @@ const Navigation = () => {
     <nav className="bg-gray-900/80 backdrop-blur-lg text-white shadow-lg fixed w-full z-50">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
           <Link to="/dashboard" className="text-3xl font-extrabold tracking-wide text-blue-400">
             Elev8 🚀
           </Link>
-
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <NavItem to="/dashboard/study-groups" icon={<FaUsers />}>Study Groups</NavItem>
-            <NavItem to="/dashboard/college-chat" icon={<FaComments />}>College Chat</NavItem>
-            <NavItem to="/dashboard/hackathons" icon={<FaCode />}>Hackathons</NavItem>
-            <NavItem to={`/dashboard/profile/${username}`} icon={<FaUser />}>
+            <NavLink
+              to="/dashboard/chat"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 rounded-lg transition-all 
+     ${isActive ? "bg-blue-600 text-white hover:bg-blue-" : "text-gray-400 hover:bg-gray-700 hover:text-white"}`
+              }
+            >
+              <FaUsers className="mr-2" />
+              Groups & Messages
+            </NavLink>
+
+            <NavLink
+              to="/dashboard/college-chat"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 rounded-lg transition-all 
+     ${isActive ? "bg-blue-600 text-white hover:bg-blue-300" : "text-gray-400 hover:bg-gray-700 hover:text-white"}`
+              }
+            >
+              <FaComments className="mr-2" />
+              College Chat
+            </NavLink>
+
+            <NavLink
+              to="/dashboard/hackathons"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 rounded-lg transition-all 
+     ${isActive ? "bg-blue-600 text-white hover:bg-blue-300" : "text-gray-400 hover:bg-gray-700 hover:text-white"}`
+              }
+            >
+              <FaCode className="mr-2" />
+              Hackathons
+            </NavLink>
+
+            <NavLink
+              to={`/dashboard/profile/${username}`}
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 rounded-lg transition-all 
+     ${isActive ? "bg-blue-600 text-white hover:bg-blue-300" : "text-gray-400 hover:bg-gray-700 hover:text-white"}`
+              }
+            >
+              <FaUser className="mr-2" />
               <Username username={username} />
-            </NavItem>
+            </NavLink>
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white transition duration-300"
