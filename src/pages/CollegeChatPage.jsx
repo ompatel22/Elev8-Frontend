@@ -3,7 +3,7 @@ import GradientBackground from "../components/background/GradientBackground";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Navigation from "../components/navigation/Navigation";
-import Chatpage from "../components/chat/Chatpage";
+import CollegeChat from "../components/college-chat/CollegeChat";
 
 function CollegeChatPage() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function CollegeChatPage() {
     <>
       <GradientBackground className="min-h-screen">
         <Navigation />
-        <Chatpage />
+        <CollegeChat />
       </GradientBackground>
     </>
   );
