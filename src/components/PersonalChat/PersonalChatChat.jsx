@@ -152,8 +152,8 @@ const PersonalChatChat = ({ memberId, memberName }) => {
 
             <main ref={chatBoxRef} className="flex-1 px-10 py-4 dark:bg-slate-600 overflow-y-auto h-full max-h-[calc(100vh-160px)]">
                 <div className="flex flex-col gap-3">
-                    {messages.map((message) => (
-                        <div className={`flex ${message.sender === currentUser ? "justify-end" : "justify-start"}`}>
+                    {messages.map((message, index) => (
+                        <div key={index} className={`flex ${message.sender === currentUser ? "justify-end" : "justify-start"}`}>
                             <div className={`my-2 ${message.sender === currentUser ? "bg-green-800" : "bg-gray-800"} p-3 max-w-xs rounded-lg`}>
                                 <div className="flex flex-row gap-2">
                                     <Link to={`/dashboard/profile/${message.sender}`}>

@@ -117,16 +117,16 @@ function ChatDropDown() {
 
     const debouncedSearch = useCallback(
         debounce((query) => {
-            const filtered = studyGroups.filter((group) =>
-                group.studyGroupName.toLowerCase().includes(query.toLowerCase())
-            );
             const filteredChats = personalChats.filter((chat) =>
                 chat.githubUserName.toLowerCase().includes(query.toLowerCase())
+            );
+            const filtered = studyGroups.filter((group) =>
+                group.studyGroupName.toLowerCase().includes(query.toLowerCase())
             );
             setFilteredGroups(filtered);
             setFilteredPersonalChats(filteredChats);
         }, 300),
-        [studyGroups]
+        [studyGroups, personalChats]
     );
 
     const handleSearchChange = (event) => {
