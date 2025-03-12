@@ -24,7 +24,7 @@ const PersonalChatChat = ({ memberId, memberName }) => {
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
+    +    useEffect(() => {
         const userId = localStorage.getItem("userId");
         const user = localStorage.getItem("username");
         setCurrentUser(user || "");
@@ -42,10 +42,11 @@ const PersonalChatChat = ({ memberId, memberName }) => {
     useEffect(() => {
         const loadMessages = async () => {
             if (!currentUserId || !member2Id) return;
+            const sortedChatId = [currentUserId, member2Id].sort().join("/");
 
             try {
                 const response = await axios.get(
-                    `http://localhost:8080/api/v1/personal_chat/all_messages/${currentUserId}/${member2Id}`
+                    `http://localhost:8080/api/v1/personal_chat/all_messages/${sortedChatId}`
                 );
 
                 console.log("API Response:", response); // ✅ Debugging
@@ -75,7 +76,7 @@ const PersonalChatChat = ({ memberId, memberName }) => {
     useEffect(() => {
         if (!currentUserId || !member2Id) return;
 
-        const sortedChatId = [currentUserId, member2Id].sort().join("_");
+        const sortedChatId = [currentUserId, member2Id].sort().join("/");
 
         if (stompClientRef.current) {
             stompClientRef.current.disconnect();
@@ -122,11 +123,10 @@ const PersonalChatChat = ({ memberId, memberName }) => {
                 content: input,
                 timestamp: new Date().toISOString(),
             };
-
-            setMessages((prevMessages) => [...prevMessages, message]);
+            const sortedChatId = [currentUserId, member2Id].sort().join("/");
 
             stompClientRef.current.send(
-                `/app/personal_chat/send_message/${currentUserId}/${member2Id}`,
+                `/app/personal_chat/send_message/${sortedChatId}`,
                 {},
                 JSON.stringify(message)
             );
