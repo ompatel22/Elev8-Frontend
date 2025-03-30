@@ -143,7 +143,7 @@ const PersonalChatChat = ({ memberId, memberName }) => {
     return (
         <div className="flex flex-col h-full">
             <header className="dark:border-gray-700 py-5 shadow flex justify-center items-center dark:bg-gray-900 pt-8">
-                <Link to={`/dashboard/study-group/${member2Id}/users`}>
+                <Link to={`/dashboard/profile/${memberName}`}>
                     <h1 className="text-2xl font-extrabold tracking-wide text-blue-400">
                         {memberName}
                     </h1>
