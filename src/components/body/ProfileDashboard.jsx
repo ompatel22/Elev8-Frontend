@@ -12,7 +12,6 @@ import { FaXTwitter } from "react-icons/fa6";
 import { SiLeetcode, SiCodechef } from "react-icons/si";
 import ProfileCard from "../profile/ProfileCard";
 import { FaGlobe, FaFileAlt, FaAward, FaCertificate } from "react-icons/fa";
-import { use } from "react";
 
 const platformConfig = [
   {
@@ -255,9 +254,8 @@ const ProfileDashboard = () => {
                       platform={platform.platform}
                       username={userData[platform.usernameKey]}
                       icon={platform.icon}
-                      link={`${platform.baseUrl}${
-                        userData[platform.usernameKey]
-                      }`}
+                      link={`${platform.baseUrl}${userData[platform.usernameKey]
+                        }`}
                       bgColor={platform.bgColor}
                     />
                   ))}
