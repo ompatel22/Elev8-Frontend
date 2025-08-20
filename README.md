@@ -16,7 +16,7 @@ Students can link their GitHub, LeetCode, CodeChef, and other profiles to displa
 **Real-Time Chat**  
 WebSocket-powered real-time messaging enables smooth communication in study groups, hackathon teams, college communities, and personal chats.
 
-## Modules
+## ✨ Modules
 
 ### 1. Profile Creation
 Integration with platforms like GitHub, LeetCode, CodeChef etc. to showcase coding achievements.
