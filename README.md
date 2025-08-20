@@ -5,7 +5,7 @@ Elev8 is a dynamic digital platform designed to empower students by providing a 
 ## ✨ Key Features
 
 - **Comprehensive User Profiles:** Create and manage detailed profiles with seamless integration with platforms like GitHub, LeetCode, and CodeChef to showcase your coding portfolio.
-- **College Interaction Module:** Engage with your college community through group chats, event management, and real-time doubt resolution.
+- **College Interaction Module:** Engage with your college community.
 - **Hackathon Hub:** Discover hackathons, post your own, find teammates, and manage team requests efficiently.
 - **Collaborative Study Groups:** Form and join study groups to promote peer-to-peer support and collaborative learning.
 - **Real-Time Communication:** Engage in seamless conversations through personal chats, study group chats, and hackathon team channels.
