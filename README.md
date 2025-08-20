@@ -4,11 +4,36 @@ Elev8 is a dynamic digital platform designed to empower students by providing a 
 
 ## ✨ Key Features
 
-- **Comprehensive User Profiles:** Create and manage detailed profiles with seamless integration with platforms like GitHub, LeetCode, and CodeChef to showcase your coding portfolio.
-- **College Interaction Module:** Engage with your college community.
-- **Hackathon Hub:** Discover hackathons, post your own, find teammates, and manage team requests efficiently.
-- **Collaborative Study Groups:** Form and join study groups to promote peer-to-peer support and collaborative learning.
-- **Real-Time Communication:** Engage in seamless conversations through personal chats, study group chats, and hackathon team channels.
+**Centralized Collaboration Hub**  
+A unified platform for students to connect, collaborate on projects, participate in academic discussions, and engage in hackathons.
+
+**Hackathon Team Formation & Event Discovery**  
+Students can explore ongoing and upcoming hackathons, and send or receive team formation requests seamlessly within the platform.
+
+**Integrated Coding Profiles**  
+Students can link their GitHub, LeetCode, CodeChef, and other profiles to display their coding achievements and technical skills.
+
+**Real-Time Chat**  
+WebSocket-powered real-time messaging enables smooth communication in study groups, hackathon teams, college communities, and personal chats.
+
+## Modules
+
+### 1. Profile Creation
+Integration with platforms like GitHub, LeetCode, CodeChef etc. to showcase coding achievements.
+
+### 2. College Section
+- **Group Chat**: Real-time messaging with text, emojis.
+- **Event Announcements**: Share details of upcoming events.
+- **Doubt Solving**: Post and resolve academic doubts.
+
+### 3. Hackathon Section
+- **Explore Hackathons**: Browse ongoing, upcoming and past hackathons.
+- **Team Formation Requests**: Accept or reject team formation requests with user details.
+
+### 4. Groups & Messages
+- **Study Group Chat**: Real-time messaging for academic collaboration within study groups.
+- **Personal Chat**: Direct, private messaging between users.
+- **Hackathon Chat**: Group chat for hackathon team communication.
 
 ## 🚀 Technologies Used
 
@@ -19,10 +44,10 @@ Elev8 is a dynamic digital platform designed to empower students by providing a 
 ## 📸 Screenshots
 
 **Profile Creation:**
-<img width="1920" height="1106" alt="Screenshot 2025-04-25 at 11 15 14 AM" src="https://github.com/user-attachments/assets/051eb053-b37c-4b15-b8b8-2995c20befe2" />
+<img width="1920" height="1106" alt="Screenshot 2025-04-25 at 11 15 14 AM" src="https://github.com/user-attachments/assets/051eb053-b37c-4b15-b8b8-2995c20befe2" />
 
 **Profile Creation:**
-<img width="1920" height="1106" alt="Screenshot 2025-04-25 at 11 15 24 AM" src="https://github.com/user-attachments/assets/85622137-cebe-4721-a5b8-a23c97d503cd" />
+<img width="1920" height="1106" alt="Screenshot 2025-04-25 at 11 15 24 AM" src="https://github.com/user-attachments/assets/85622137-cebe-4721-a5b8-a23c97d503cd" />
 
 **Hackathon Discovery:**
 <img width="1920" height="1106" alt="image" src="https://github.com/user-attachments/assets/ca0127fe-1e1e-4dfa-96ff-7ba2a478d8fd" />
